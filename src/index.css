@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design Tokens ─────────────────────────────────────────── */
+
+:root {
+  --bg-primary:     #0a0a0a;
+  --bg-surface:     #111111;
+  --text-primary:   #f0f0f0;
+  --text-secondary: #a0a0a0;
+  --text-mono:      #7dd3b0;
+  --border:         #1e1e1e;
+  --accent:         #7dd3b0;
+  --bg-nav:         rgba(10, 10, 10, 0.85);
+}
+
+[data-theme="light"] {
+  --bg-primary:     #fafaf8;
+  --bg-surface:     #f0efed;
+  --text-primary:   #0f0f0f;
+  --text-secondary: #4a4a4a;
+  --text-mono:      #2d7a5f;
+  --border:         #e0e0dc;
+  --accent:         #2d7a5f;
+  --bg-nav:         rgba(250, 250, 248, 0.85);
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  code, kbd, samp, pre {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  [id] {
+    scroll-margin-top: 4rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--text-mono);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

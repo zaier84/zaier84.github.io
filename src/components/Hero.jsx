@@ -4,7 +4,7 @@ import { fadeUp } from '@/lib/motion';
 
 const heroStagger = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } },
+  visible: { transition: { staggerChildren: 0.12 } },
 };
 
 const ROLES = ['Backend Engineer', 'Systems Thinker', 'Builder'];
@@ -12,43 +12,47 @@ const ROLES = ['Backend Engineer', 'Systems Thinker', 'Builder'];
 const gridStyle = {
   backgroundImage:
     'radial-gradient(circle, var(--border) 1px, transparent 1px)',
-  backgroundSize: '28px 28px',
-  maskImage: 'linear-gradient(to bottom, black 25%, transparent 95%)',
-  WebkitMaskImage: 'linear-gradient(to bottom, black 25%, transparent 95%)',
+  backgroundSize: '32px 32px',
+  maskImage: 'linear-gradient(to bottom, black 20%, transparent 92%)',
+  WebkitMaskImage: 'linear-gradient(to bottom, black 20%, transparent 92%)',
 };
 
 export function Hero() {
+  const city = profile.location.split(',')[0];
+
   return (
     <section id="hero" className="relative">
-      <div aria-hidden className="absolute inset-0 -z-10 opacity-60" style={gridStyle} />
+      <div aria-hidden className="absolute inset-0 -z-10 opacity-50" style={gridStyle} />
 
-      <div className="min-h-screen flex items-center px-6 py-24 max-w-5xl mx-auto">
+      <div className="flex flex-col justify-center min-h-screen px-6 lg:px-10 py-24 max-w-6xl mx-auto">
         <motion.div variants={heroStagger} initial="hidden" animate="visible">
 
           <motion.p
             variants={fadeUp}
-            className="font-mono text-text-mono text-xs tracking-widest uppercase mb-6"
+            className="font-mono text-text-mono text-xs tracking-widest uppercase mb-10"
           >
-            {profile.title}
+            <span>{city}</span>
+            <span className="text-text-secondary mx-3">/</span>
+            <span>{profile.title}</span>
           </motion.p>
 
           <motion.h1
             variants={fadeUp}
-            className="font-sans text-6xl sm:text-7xl lg:text-[5.5rem] font-semibold text-text-primary leading-[1.05] tracking-tight mb-6"
+            className="font-sans text-6xl sm:text-7xl lg:text-[8rem] xl:text-[9.5rem] font-medium text-text-primary leading-[0.92] tracking-tight mb-12 max-w-[14ch]"
           >
             {profile.name}
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className="font-mono text-text-mono text-sm tracking-wide mb-10"
+            className="font-mono text-text-mono text-sm tracking-wide mb-14"
           >
             {ROLES.join('  ·  ')}
           </motion.p>
 
           <motion.p
             variants={fadeUp}
-            className="text-text-secondary text-base leading-relaxed max-w-xl mb-12"
+            className="text-text-secondary text-base lg:text-lg leading-relaxed max-w-2xl mb-16"
           >
             {profile.bio}
           </motion.p>

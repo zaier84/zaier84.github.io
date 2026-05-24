@@ -7,25 +7,25 @@
 /* ─── Design Tokens ─────────────────────────────────────────── */
 
 :root {
-  --bg-primary:     #0a0a0a;
-  --bg-surface:     #111111;
-  --text-primary:   #f0f0f0;
-  --text-secondary: #a0a0a0;
-  --text-mono:      #7dd3b0;
-  --border:         #1e1e1e;
-  --accent:         #7dd3b0;
-  --bg-nav:         rgba(10, 10, 10, 0.85);
+  --bg-primary:     #0b0b0c;
+  --bg-surface:     #161617;
+  --text-primary:   #ededed;
+  --text-secondary: #8b8a87;
+  --text-mono:      #d4a574;
+  --border:         #232323;
+  --accent:         #d4a574;
+  --bg-nav:         rgba(11, 11, 12, 0.85);
 }
 
 [data-theme="light"] {
-  --bg-primary:     #fafaf8;
-  --bg-surface:     #f0efed;
-  --text-primary:   #0f0f0f;
-  --text-secondary: #4a4a4a;
-  --text-mono:      #2d7a5f;
-  --border:         #e0e0dc;
-  --accent:         #2d7a5f;
-  --bg-nav:         rgba(250, 250, 248, 0.85);
+  --bg-primary:     #f7f5f2;
+  --bg-surface:     #ecebe6;
+  --text-primary:   #1a1815;
+  --text-secondary: #6b6862;
+  --text-mono:      #a8784f;
+  --border:         #d8d4cc;
+  --accent:         #a8784f;
+  --bg-nav:         rgba(247, 245, 242, 0.85);
 }
 
 /* ─── Base ──────────────────────────────────────────────────── */

@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { education, certifications } from '@/data/education';
 import { projects } from '@/data/projects';
+import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import { SectionShell } from '@/components/SectionShell';
 
 const toProjectEntry = (id) => {
   const p = projects.find(p => p.id === id);
@@ -14,16 +16,9 @@ const toProjectEntry = (id) => {
   };
 };
 
-// Chronological career story — OCR & Interpreter live in the Projects section only
 const entries = [
-  ...education.map(e => ({
-    id: e.institution,
-    date: e.period,
-    type: 'Education',
-    title: e.degree,
-    subtitle: `${e.institution} · ${e.location}`,
-    detail: e.cgpa ? `CGPA ${e.cgpa}` : null,
-  })),
+  toProjectEntry('erp-saas'),
+  toProjectEntry('macromate'),
   ...certifications.map(c => ({
     id: c.title,
     date: c.period,
@@ -32,77 +27,55 @@ const entries = [
     subtitle: `${c.issuer} · ${c.platform}`,
     detail: null,
   })),
-  toProjectEntry('macromate'),
-  toProjectEntry('erp-saas'),
+  ...education.map(e => ({
+    id: e.institution,
+    date: e.period,
+    type: 'Education',
+    title: e.degree,
+    subtitle: `${e.institution} · ${e.location}`,
+    detail: e.cgpa ? `CGPA ${e.cgpa}` : null,
+  })),
 ];
 
 export function Experience() {
   return (
-    <section id="experience" className="px-6 py-24 max-w-5xl mx-auto border-t border-border">
-      <h2 className="font-mono text-text-mono text-xs tracking-widest uppercase mb-16">
-        <span className="text-text-secondary mr-3">03</span>
-        <span>Experience</span>
-      </h2>
+    <SectionShell id="experience" number="03" label="Experience">
+      <motion.ol
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce}
+        className="space-y-12"
+      >
+        {entries.map(entry => (
+          <motion.li
+            key={entry.id}
+            variants={fadeUp}
+            className="grid grid-cols-1 sm:grid-cols-[10rem_1fr] gap-y-2 gap-x-8 items-baseline"
+          >
+            <time className="font-mono text-text-mono text-xs tracking-wide whitespace-nowrap">
+              {entry.date}
+            </time>
 
-      <div className="relative">
-        {/* Vertical line — left-side on mobile, centered on desktop */}
-        <div className="absolute left-1 top-0 bottom-0 w-px bg-border md:left-1/2 md:-translate-x-1/2" />
-
-        <div className="space-y-14">
-          {entries.map((entry, i) => {
-            const isLeft = i % 2 === 0;
-            return (
-              <motion.div
-                key={entry.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="relative pl-8 md:pl-0"
-              >
-                {/* Dot */}
-                <div className="absolute left-0 top-[7px] w-2 h-2 bg-text-mono md:left-1/2 md:-translate-x-1/2" />
-
-                {/* Card */}
-                <div
-                  className={`md:w-[calc(50%-2rem)] ${
-                    isLeft
-                      ? 'md:mr-auto md:pr-6 md:text-right'
-                      : 'md:ml-auto md:pl-6'
-                  }`}
-                >
-                  {/* Date badge */}
-                  <time className="inline-block font-mono text-text-mono text-xs border border-text-mono px-2 py-0.5 mb-3">
-                    {entry.date}
-                  </time>
-
-                  {/* Type */}
-                  <p className="font-mono text-text-secondary text-xs tracking-widest uppercase mb-1">
-                    {entry.type}
-                  </p>
-
-                  {/* Title */}
-                  <h3 className="text-text-primary font-semibold text-base leading-snug mb-1">
-                    {entry.title}
-                  </h3>
-
-                  {/* Subtitle */}
-                  <p className="text-text-secondary text-sm">
-                    {entry.subtitle}
-                  </p>
-
-                  {/* Detail */}
-                  {entry.detail && (
-                    <p className="font-mono text-text-mono text-xs mt-2">
-                      {entry.detail}
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+            <div>
+              <p className="font-mono text-text-secondary text-xs tracking-widest uppercase mb-2">
+                {entry.type}
+              </p>
+              <h3 className="text-text-primary font-semibold text-lg leading-snug mb-1">
+                {entry.title}
+              </h3>
+              <p className="text-text-secondary text-sm leading-relaxed">
+                {entry.subtitle}
+              </p>
+              {entry.detail && (
+                <p className="font-mono text-text-mono text-xs mt-3">
+                  {entry.detail}
+                </p>
+              )}
+            </div>
+          </motion.li>
+        ))}
+      </motion.ol>
+    </SectionShell>
   );
 }

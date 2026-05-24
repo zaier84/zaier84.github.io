@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { projects } from '@/data/projects';
 import { ProjectCard } from '@/components/ProjectCard';
 import { ProjectDrawer } from '@/components/ProjectDrawer';
+import { SectionShell } from '@/components/SectionShell';
 
 const FILTERS = ['All', 'Node.js', 'Python', 'Go', 'Flutter'];
-
 
 export function Projects() {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -15,6 +15,9 @@ export function Projects() {
     activeFilter === 'All'
       ? projects
       : projects.filter(p => p.tech.includes(activeFilter));
+
+  const featured = activeFilter === 'All' ? filtered.find(p => p.featured) : null;
+  const rest = featured ? filtered.filter(p => p !== featured) : filtered;
 
   useEffect(() => {
     if (!selectedProject) return;
@@ -28,22 +31,13 @@ export function Projects() {
   }, [selectedProject]);
 
   return (
-    <section id="projects" className="px-6 py-24 max-w-5xl mx-auto border-t border-border">
-      <motion.h2
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-        className="font-mono text-text-mono text-xs tracking-widest uppercase mb-16"
-      >
-        <span className="text-text-secondary mr-3">02</span>
-        <span>Projects</span>
-      </motion.h2>
-
-      <div className="flex gap-2 flex-wrap mb-12">
+    <SectionShell id="projects" number="02" label="Projects">
+      <div role="tablist" aria-label="Filter projects by technology" className="flex gap-2 flex-wrap mb-10">
         {FILTERS.map(filter => (
           <button
             key={filter}
+            role="tab"
+            aria-selected={activeFilter === filter}
             onClick={() => setActiveFilter(filter)}
             className={`relative font-mono text-xs px-3 py-1.5 transition-colors duration-150 ${
               activeFilter === filter
@@ -63,18 +57,30 @@ export function Projects() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AnimatePresence mode="popLayout">
-          {filtered.map((project, i) => (
+      <AnimatePresence mode="popLayout">
+        {featured && (
+          <div className="mb-6">
+            <ProjectCard
+              key={featured.id}
+              project={featured}
+              index={0}
+              featured
+              onClick={() => setSelectedProject(featured)}
+            />
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {rest.map((project, i) => (
             <ProjectCard
               key={project.id}
               project={project}
-              index={i}
+              index={featured ? i + 1 : i}
               onClick={() => setSelectedProject(project)}
             />
           ))}
-        </AnimatePresence>
-      </div>
+        </div>
+      </AnimatePresence>
 
       <AnimatePresence>
         {selectedProject && (
@@ -84,6 +90,6 @@ export function Projects() {
           />
         )}
       </AnimatePresence>
-    </section>
+    </SectionShell>
   );
 }

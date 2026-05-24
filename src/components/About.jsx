@@ -2,50 +2,54 @@ import { motion } from 'framer-motion';
 import { profile } from '@/data/profile';
 import { skills } from '@/data/skills';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import { SectionShell } from '@/components/SectionShell';
 
 export function About() {
   return (
-    <section id="about" className="px-6 py-24 max-w-5xl mx-auto border-t border-border">
+    <SectionShell id="about" number="01" label="About">
       <motion.div
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOnce}
       >
-        <motion.h2 variants={fadeUp} className="font-mono text-text-mono text-xs tracking-widest uppercase mb-16">
-          <span className="text-text-secondary mr-3">01</span>
-          <span>About</span>
-        </motion.h2>
-
-        <motion.p variants={fadeUp} className="text-text-secondary text-base leading-relaxed max-w-2xl mb-16">
+        <motion.p
+          variants={fadeUp}
+          className="text-text-primary text-lg lg:text-xl leading-relaxed mb-16 max-w-2xl"
+        >
           {profile.bio}
         </motion.p>
 
-        <motion.div
-          variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
-        >
+        <motion.div variants={fadeUp} className="mb-6">
+          <p className="font-mono text-text-mono text-xs tracking-widest uppercase">
+            Stack
+          </p>
+        </motion.div>
+
+        <motion.dl variants={staggerContainer} className="space-y-5">
           {skills.map(group => (
-            <motion.div key={group.category} variants={fadeUp}>
-              <p className="font-mono text-text-mono text-xs tracking-widest uppercase mb-4">
+            <motion.div
+              key={group.category}
+              variants={fadeUp}
+              className="grid grid-cols-1 sm:grid-cols-[7rem_1fr] gap-x-8 gap-y-2 items-baseline"
+            >
+              <dt className="font-mono text-text-mono text-xs tracking-widest uppercase">
                 {group.category}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {group.items.map(item => (
-                  <motion.span
-                    key={item}
-                    whileHover={{ scale: 1.06 }}
-                    transition={{ duration: 0.12 }}
-                    className="font-mono text-text-secondary text-xs px-3 py-1.5 border border-border hover:border-text-mono hover:text-text-primary transition-colors duration-150 cursor-default select-none"
-                  >
-                    {item}
-                  </motion.span>
+              </dt>
+              <dd className="font-mono text-text-secondary text-sm leading-relaxed">
+                {group.items.map((item, i) => (
+                  <span key={item}>
+                    {i > 0 && <span className="text-border mx-2.5">·</span>}
+                    <span className="hover:text-text-primary transition-colors duration-150">
+                      {item}
+                    </span>
+                  </span>
                 ))}
-              </div>
+              </dd>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.dl>
       </motion.div>
-    </section>
+    </SectionShell>
   );
 }

@@ -9,7 +9,7 @@ export const profile = {
   contact: {
     email: "zaier8284@gmail.com",
     github: "https://github.com/zaier84/",
-    linkedin: "https://linkedin.com/in/zaier-ahmad-367951309/",
+    linkedin: "https://www.linkedin.com/in/zaier-ahmad/",
   },
 };
 

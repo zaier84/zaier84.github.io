@@ -5,7 +5,7 @@ export const skills = [
   },
   {
     category: "Backend",
-    items: ["Node.js", "Express.js", "FastAPI", "REST API Design", "Orchestrator Architecture"],
+    items: ["Node.js", "Express.js", "FastAPI", "RESTful APIs", "Software Architecture", "System Design"],
   },
   {
     category: "Frontend",
@@ -17,7 +17,11 @@ export const skills = [
   },
   {
     category: "Tools",
-    items: ["Git", "Docker", "Postman"],
+    items: ["Git", "GitHub", "GitHub Actions", "Linux", "Docker", "Postman"],
+  },
+  {
+    category: "Testing",
+    items: ["TDD", "Go Test"],
   },
   {
     category: "Exploring",

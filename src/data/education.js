@@ -4,7 +4,7 @@ export const education = [
     institution: "University of Central Punjab",
     location: "Lahore, Pakistan",
     period: "Mar 2022 – Mar 2026",
-    cgpa: "3.41",
+    cgpa: "3.41 / 4.0",
   },
 ];
 

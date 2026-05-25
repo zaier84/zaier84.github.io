@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,25 +7,47 @@
 /* ─── Design Tokens ─────────────────────────────────────────── */
 
 :root {
-  --bg-primary:     #0b0b0c;
-  --bg-surface:     #161617;
-  --text-primary:   #ededed;
-  --text-secondary: #8b8a87;
-  --text-mono:      #d4a574;
-  --border:         #232323;
-  --accent:         #d4a574;
-  --bg-nav:         rgba(11, 11, 12, 0.85);
+  --bg-primary:     #111110; /* warm almost-black */
+  --bg-surface:     #191917; /* warm card lift — clear separation from bg */
+  --bg-elevated:    #222220; /* drawers, active pills */
+  --text-primary:   #f2ede8; /* warm off-white — comfortable for long reading */
+  --text-secondary: #928f8a; /* warm medium gray */
+  --text-tertiary:  #615e5a; /* warm dim labels */
+  --text-mono:      #615e5a;
+  --border:         #272624; /* warm very subtle */
+  --border-strong:  #37342f;
+  --accent:         #34d399; /* emerald-400 — fresh, easy on eyes */
+  --accent-hover:   #6ee7b7; /* emerald-300 */
+  --accent-soft:    rgba(52, 211, 153, 0.08);
+  --bg-nav:         rgba(17, 17, 16, 0.80);
+
+  /* maximal layer */
+  --shader-a:       #111110;
+  --shader-b:       #34d399; /* emerald flow */
+  --shader-scrim:   rgba(17, 17, 16, 0.50);
+  --cursor-size:    9px;
+  --cursor-color:   #34d399;
 }
 
 [data-theme="light"] {
-  --bg-primary:     #f7f5f2;
-  --bg-surface:     #ecebe6;
-  --text-primary:   #1a1815;
-  --text-secondary: #6b6862;
-  --text-mono:      #a8784f;
-  --border:         #d8d4cc;
-  --accent:         #a8784f;
-  --bg-nav:         rgba(247, 245, 242, 0.85);
+  --bg-primary:     #f5f0e8; /* warm linen — clearly beige, not off-white */
+  --bg-surface:     #faf7f0; /* lighter linen for cards */
+  --bg-elevated:    #fffcf4; /* warmest near-white for drawers */
+  --text-primary:   #1a1816; /* warm near-black */
+  --text-secondary: #5a5751;
+  --text-tertiary:  #8c8985;
+  --text-mono:      #8c8985;
+  --border:         #e2dbd0; /* warm border */
+  --border-strong:  #c9c1b3;
+  --accent:         #059669; /* emerald-600 — WCAG AA on linen */
+  --accent-hover:   #047857; /* emerald-700 */
+  --accent-soft:    rgba(5, 150, 105, 0.08);
+  --bg-nav:         rgba(245, 240, 232, 0.90);
+
+  --shader-a:       #f5f0e8;
+  --shader-b:       #059669;
+  --shader-scrim:   rgba(245, 240, 232, 0.45);
+  --cursor-color:   #059669;
 }
 
 /* ─── Base ──────────────────────────────────────────────────── */
@@ -49,7 +71,18 @@
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.6;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    font-feature-settings: 'cv11', 'ss01';
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3 {
+    letter-spacing: -0.022em;
+  }
+
+  /* Display face for kinetic headlines. */
+  .font-display {
+    font-feature-settings: 'ss01', 'ss02';
+    letter-spacing: -0.03em;
   }
 
   code, kbd, samp, pre {
@@ -57,14 +90,75 @@
   }
 
   [id] {
-    scroll-margin-top: 4rem;
+    scroll-margin-top: 6rem;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--text-mono);
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 3px;
   }
+}
+
+/* ─── Film grain overlay ────────────────────────────────────── */
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─── Lenis smooth scroll ───────────────────────────────────── */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ─── Custom cursor ─────────────────────────────────────────── */
+
+/* Applied to <html> only when the JS custom cursor is active (fine pointer,
+   motion allowed). Hides the native cursor on interactive elements too. */
+.cursor-custom,
+.cursor-custom a,
+.cursor-custom button,
+.cursor-custom [role='button'],
+.cursor-custom input,
+.cursor-custom textarea,
+.cursor-custom label {
+  cursor: none;
+}
+
+/* ─── Kinetic type helpers ──────────────────────────────────── */
+
+/* Mask wrapper for per-line / per-word reveals. */
+.reveal-mask {
+  overflow: hidden;
+  display: block;
+}
+
+/* Tabular figures for the live clock + stat counters so they don't jitter. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -75,5 +169,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Never hijack the native cursor when motion is reduced. */
+  .cursor-custom,
+  .cursor-custom * {
+    cursor: auto !important;
   }
 }

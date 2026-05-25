@@ -13,13 +13,15 @@ export const projects = [
       "Multi-tenancy and reseller support in core architecture",
     ],
     tech: ["Node.js", "Express.js", "Microsoft SQL Server", "Orchestrator Architecture"],
+    // Commercial product — source is closed.
+    private: true,
     links: {},
   },
   {
     id: "macromate",
     title: "MacroMate",
-    type: "Final Year Project",
-    period: "",
+    type: "Capstone Project",
+    period: "2025 – 2026",
     description:
       "AI-powered cross-platform mobile app for calorie, macronutrient, and workout tracking with personalized recommendations. Built REST APIs with FastAPI for authentication and data management. Integrated Gemini API for food image recognition and a pretrained model for meal plan generation. Designed end-to-end from mobile UI to backend, delivering a seamless experience across iOS and Android.",
     highlights: [
@@ -28,13 +30,14 @@ export const projects = [
       "Cross-platform Flutter app targeting iOS and Android",
     ],
     tech: ["Flutter", "FastAPI", "Python", "Gemini API", "REST API"],
-    links: {},
+    // TODO(owner): replace with the exact repo/demo URLs.
+    links: { github: "https://github.com/zaier84/" },
   },
   {
     id: "ocr-scanner",
     title: "OCR Scanner with AI Summarization",
     type: "Project",
-    period: "",
+    period: "2025",
     description:
       "Python-based OCR pipeline achieving 95%+ text extraction accuracy on multi-page PDFs with sub-3-second processing time. Integrated an AI summarization model to generate document summaries 50% faster than manual reading.",
     highlights: [
@@ -43,13 +46,14 @@ export const projects = [
       "50% faster document summarization than manual reading",
     ],
     tech: ["Python", "OpenCV", "Gemini API"],
-    links: {},
+    // TODO(owner): replace with the exact repo URL.
+    links: { github: "https://github.com/zaier84/" },
   },
   {
     id: "interpreter-go",
     title: "Interpreter in Go",
     type: "Project",
-    period: "",
+    period: "2026",
     description:
       "Complete interpreter for the Monkey language in Go, covering lexical analysis, parsing, AST construction, and tree-walking evaluation. Applied compiler design principles including Pratt parsing, scope handling, closures, and first-class functions. Maintained correctness throughout using test-driven development with Go's native testing framework.",
     highlights: [
@@ -58,6 +62,7 @@ export const projects = [
       "Test-driven development with Go's native testing framework",
     ],
     tech: ["Go"],
-    links: {},
+    // TODO(owner): replace with the exact repo URL.
+    links: { github: "https://github.com/zaier84/" },
   },
 ];

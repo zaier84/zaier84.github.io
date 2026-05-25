@@ -32,14 +32,14 @@ export function Projects() {
 
   return (
     <SectionShell id="projects" number="02" label="Projects">
-      <div role="tablist" aria-label="Filter projects by technology" className="flex gap-2 flex-wrap mb-10">
+      <div role="tablist" aria-label="Filter projects by technology" className="flex gap-1.5 flex-wrap mb-10">
         {FILTERS.map(filter => (
           <button
             key={filter}
             role="tab"
             aria-selected={activeFilter === filter}
             onClick={() => setActiveFilter(filter)}
-            className={`relative font-mono text-xs px-3 py-1.5 transition-colors duration-150 ${
+            className={`relative font-mono text-xs px-3.5 py-1.5 rounded-full transition-colors duration-200 ${
               activeFilter === filter
                 ? 'text-text-primary'
                 : 'text-text-secondary hover:text-text-primary'
@@ -48,8 +48,8 @@ export function Projects() {
             {activeFilter === filter && (
               <motion.span
                 layoutId="active-filter"
-                className="absolute inset-0 border border-text-mono"
-                transition={{ type: 'spring', stiffness: 380, damping: 35 }}
+                className="absolute inset-0 rounded-full bg-bg-elevated border border-border-strong"
+                transition={{ type: 'spring', stiffness: 380, damping: 32 }}
               />
             )}
             <span className="relative">{filter}</span>
@@ -59,7 +59,7 @@ export function Projects() {
 
       <AnimatePresence mode="popLayout">
         {featured && (
-          <div className="mb-6">
+          <div className="mb-5 lg:mb-6">
             <ProjectCard
               key={featured.id}
               project={featured}
@@ -70,7 +70,7 @@ export function Projects() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
           {rest.map((project, i) => (
             <ProjectCard
               key={project.id}

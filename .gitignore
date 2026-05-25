@@ -8,4 +8,8 @@ dist/
 npm-debug.log*
 .DS_Store
 Thumbs.db
+
+# Claude Code tooling
 .claude/
+.agents/
+skills-lock.json

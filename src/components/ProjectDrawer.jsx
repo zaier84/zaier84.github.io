@@ -19,8 +19,8 @@ const outlineLink =
 export function ProjectDrawer({ project, onClose }) {
   // `aria-modal` promises the rest of the page is inert; the trap makes it true.
   const panelRef = useFocusTrap(true);
-  const { links = {}, artwork } = project;
-  const hasLinks = Object.keys(links).length > 0;
+  const { links = {}, artwork, repos } = project;
+  const hasLinks = Object.keys(links).length > 0 || Boolean(repos?.length);
 
   return (
     <>
@@ -156,6 +156,17 @@ export function ProjectDrawer({ project, onClose }) {
                     View on npm →
                   </a>
                 )}
+                {repos?.map((repo) => (
+                  <a
+                    key={repo.href}
+                    href={repo.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={outlineLink}
+                  >
+                    {repo.label} →
+                  </a>
+                ))}
                 {links.github && (
                   <a href={links.github} target="_blank" rel="noopener noreferrer" className={outlineLink}>
                     GitHub →

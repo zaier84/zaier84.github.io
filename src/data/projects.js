@@ -71,20 +71,25 @@ export const projects = [
     links: { github: "https://github.com/zaier84/capo" },
   },
   {
-    id: "focus-nvim",
-    title: "focus.nvim",
-    type: "Neovim plugin",
+    id: "nvim-plugins",
+    title: "focus.nvim & scratch.nvim",
+    type: "Neovim plugins",
     period: "2026",
     description:
-      "An asynchronous Pomodoro and focus tracker for Neovim driven by a native libuv timer handle — zero polling, and it never blocks input, redraws, or the main thread. State surfaces through a live winbar HUD that saves and restores any pre-existing winbar rather than clobbering it, plus an on-demand floating menu with a real-time progress bar and buffer-local keymaps.",
+      "Two editor plugins in Lua. focus.nvim is an asynchronous Pomodoro tracker driven by a native libuv timer handle — zero polling, and it never blocks input, redraws, or the main thread — surfacing state through a winbar HUD that saves and restores any pre-existing winbar rather than clobbering it. scratch.nvim manages per-filetype singleton scratch buffers with stale-handle eviction, configurable split or float placement, and optional stdpath persistence.",
     highlights: [
       "Native libuv (vim.uv) timer handle — no polling loop, no input latency",
       "Winbar HUD saves and restores whatever winbar was already there",
-      "Floating menu with live progress bar and buffer-local keymaps",
-      "Tested headlessly with plenary busted",
+      "Per-filetype singleton scratch buffers with stale-handle eviction",
+      "Both tested headlessly with plenary busted",
     ],
     tech: ["Lua", "Neovim", "libuv"],
-    links: { github: "https://github.com/zaier84/focus.nvim" },
+    // Two repos, so the card renders a labelled link per repo instead of a
+    // single generic "Source" button.
+    repos: [
+      { label: "focus.nvim", href: "https://github.com/zaier84/focus.nvim" },
+      { label: "scratch.nvim", href: "https://github.com/zaier84/scratch.nvim" },
+    ],
   },
   {
     id: "macromate",

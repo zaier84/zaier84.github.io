@@ -106,6 +106,7 @@ To change the palette, update only `:root` / `[data-theme="light"]` in `src/inde
 - **HTML:** Semantic elements (`<section>`, `<article>`, `<nav>`, `<main>`, `<time>`, `<address>`)
 - **Styles:** Tailwind utility classes; dynamic values via `style={{}}` only when CSS vars or motion values require it
 - **No raw hex** — always use design token classes
+- **Never use the `/opacity` colour modifier on a token colour** (e.g. `text-text-primary/[0.05]`). The tokens are bare `var()` values with no `<alpha-value>` slot, so Tailwind emits **no rule at all** and the element silently renders at full opacity. Use the separate `opacity-*` utility instead. (`bg-black/60` is fine — that's a real colour, not a token.)
 - **Card with links pattern:** `<article>` → absolute cover `<button>` (z-0) → `pointer-events-none` content wrapper (z-10) → real `<a>` links at z-10 with `pointer-events-auto`. Never nest `<a>` or `<button>` inside another interactive element. The cover button needs a **`ring-inset`** focus ring — the card is `overflow-hidden`, so the global `outline-offset: 3px` ring is clipped away.
 - **Overlays:** every overlay uses `useScrollLock` (refcounted — never set `body.overflow` directly) and `useFocusTrap`, and puts `data-lenis-prevent` on its scrollable region.
 - **AnimatePresence:** only direct, *keyed* children are tracked. Wrapping plain `<div>`s silently disables exit animations.

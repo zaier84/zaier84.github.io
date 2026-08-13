@@ -37,8 +37,10 @@ const linkClass =
 export function ProjectCard({ project, onClick, index, featured = false }) {
   const idx = String(index + 1).padStart(2, '0');
   const stop = (e) => e.stopPropagation();
-  const { artwork, links = {}, badge } = project;
-  const hasLinks = Boolean(project.private || links.github || links.npm || links.live);
+  const { artwork, links = {}, badge, repos } = project;
+  const hasLinks = Boolean(
+    project.private || repos?.length || links.github || links.npm || links.live
+  );
 
   return (
     <motion.article
@@ -76,10 +78,14 @@ export function ProjectCard({ project, onClick, index, featured = false }) {
         </div>
       ) : (
         /* Generated motif: oversized ghost index, no imagery. */
+        // Opacity comes from the `opacity-*` utility, not a `/[0.05]` colour
+        // modifier: the palette tokens are bare `var()` values, so Tailwind
+        // cannot synthesise an alpha channel and silently emits no rule at
+        // all — which rendered this at full brightness.
         <span
           aria-hidden
           className="pointer-events-none absolute -right-3 -top-8 font-display font-bold leading-none
-                     text-[7rem] lg:text-[9rem] text-text-primary/[0.05] select-none"
+                     text-[7rem] lg:text-[9rem] text-text-primary opacity-[0.06] select-none"
         >
           {idx}
         </span>
@@ -173,6 +179,18 @@ export function ProjectCard({ project, onClick, index, featured = false }) {
               <NpmIcon /> {badge?.value ?? 'npm'}
             </a>
           )}
+          {repos?.map((repo) => (
+            <a
+              key={repo.href}
+              href={repo.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={stop}
+              className={linkClass}
+            >
+              <GithubIcon /> {repo.label}
+            </a>
+          ))}
           {links.github && (
             <a href={links.github} target="_blank" rel="noopener noreferrer" onClick={stop} className={linkClass}>
               <GithubIcon /> Source

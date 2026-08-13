@@ -23,7 +23,6 @@ src/
     CommandPalette.jsx # ⌘K palette (cmdk) — navigate, actions, external links
     Contact.jsx       # Social links + contact form (Formspree)
     Credentials.jsx   # Education + certifications grid
-    Cursor.jsx        # Custom cursor (dot + spring ring) — fine pointer + motion only
     Experience.jsx    # Professional timeline + Credentials
     Footer.jsx        # Colophon with live local time
     Hero.jsx          # Full-bleed hero: shader, scramble roles, live time, CTA
@@ -43,15 +42,19 @@ src/
   data/               # All content — edit here, never hardcode in components
     education.js      # Degree + certifications
     experience.js     # Professional roles / work history
-    profile.js        # Name, title, tagline, bio, contact, socialLinks
-    projects.js       # Portfolio projects with tech, links, highlights
+    nav.js            # Shared nav model (navLinks, sectionIds)
+    profile.js        # Name, title, tagline, bio, roles, status, contact, socialLinks
+    projects.js       # Portfolio projects + projectFilters
     skills.js         # Skills by category
+    stats.js          # Headline metrics for the Stats band
   lib/                # Hooks and animation utilities
     motion.js         # Shared Framer Motion variants (EASE, fadeUp, blurReveal, lineChild…)
     useActiveSection.js # IntersectionObserver-based active nav section
-    useLenis.js       # Mounts Lenis smooth scroll; skips on reduced-motion / coarse pointer
+    useFocusTrap.js   # Focus trap + restore for overlays (drawer, palette, mobile menu)
+    useLenis.js       # Mounts Lenis smooth scroll + `scrollToId` (single scroll driver)
     useLocalTime.js   # Live clock via Intl.DateTimeFormat (updates every second)
     useScramble.js    # RAF text-scramble/decode effect
+    useScrollLock.js  # Refcounted body-scroll lock shared by every overlay
   pages/
     Home.jsx          # Route "/" — section composition order
     NotFound.jsx      # 404 SIGSEGV theme
@@ -67,9 +70,17 @@ All colors are CSS custom properties consumed via Tailwind's token aliases
 Never use raw hex values in components — always reference the token.
 
 **Dark mode (`:root`):** Warm charcoal family (`#111110` base) + emerald accent (`#34d399`).
-**Light mode (`[data-theme="light"]`):** Warm linen (`#f5f0e8` base) + emerald-600 (`#059669`).
+**Light mode (`[data-theme="light"]`):** Warm linen (`#f5f0e8` base) + emerald-700 (`#047857`).
 
 To change the palette, update only `:root` / `[data-theme="light"]` in `src/index.css`.
+
+**Contrast rules — do not regress these:**
+- Every text token clears WCAG AA (4.5:1) against `--bg-primary`; measured ratios
+  are noted inline in `src/index.css`.
+- **Never put `text-white` on `bg-accent`** — that pairing is 1.9:1 in dark. Filled
+  buttons use `bg-accent-strong text-accent-fg` (hover: `bg-accent-strong-hover`).
+- `--border` is decorative hairline only. Anything outlining an *interactive*
+  control uses `--border-strong`, which meets the 3:1 non-text threshold.
 
 ### Typography
 
@@ -95,7 +106,10 @@ To change the palette, update only `:root` / `[data-theme="light"]` in `src/inde
 - **HTML:** Semantic elements (`<section>`, `<article>`, `<nav>`, `<main>`, `<time>`, `<address>`)
 - **Styles:** Tailwind utility classes; dynamic values via `style={{}}` only when CSS vars or motion values require it
 - **No raw hex** — always use design token classes
-- **Card with links pattern:** `<article>` → absolute cover `<button>` (z-0) → `pointer-events-none` content wrapper (z-10) → real `<a>` links at z-10 with `pointer-events-auto`. Never nest `<a>` or `<button>` inside another interactive element.
+- **Card with links pattern:** `<article>` → absolute cover `<button>` (z-0) → `pointer-events-none` content wrapper (z-10) → real `<a>` links at z-10 with `pointer-events-auto`. Never nest `<a>` or `<button>` inside another interactive element. The cover button needs a **`ring-inset`** focus ring — the card is `overflow-hidden`, so the global `outline-offset: 3px` ring is clipped away.
+- **Overlays:** every overlay uses `useScrollLock` (refcounted — never set `body.overflow` directly) and `useFocusTrap`, and puts `data-lenis-prevent` on its scrollable region.
+- **AnimatePresence:** only direct, *keyed* children are tracked. Wrapping plain `<div>`s silently disables exit animations.
+- **In-page scrolling** goes through `scrollToId` from `@/lib/useLenis` so there is one scroll driver and focus follows the jump.
 - **ShaderField theme reactivity:** Pass `key={theme}` from the parent so ShaderField remounts and re-reads CSS vars on theme change. Do not pass theme as a prop.
 - **ogl / heavy deps:** Always dynamically import (`import('ogl')` inside `useEffect`) to keep the main bundle lean.
 

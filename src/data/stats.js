@@ -1,8 +1,8 @@
-// Headline metrics for the Stats band. Every figure is drawn from fin-erp and
-// matches the résumé — no derived or unfalsifiable numbers.
+// Instrument readouts. Every figure is drawn from fin-erp and matches the
+// résumé — no derived or unfalsifiable numbers.
 export const stats = [
-  { value: 124, suffix: "K", label: "lines of production\nJavaScript, solo" },
-  { value: 265, suffix: "", label: "REST endpoints\nin production" },
-  { value: 420, suffix: "+", label: "SQL Server tables\nacross 9 schemas" },
-  { value: 399, suffix: "", label: "integration test cases\nin 40 suites" },
+  { value: "124,000", unit: "lines", note: "production JavaScript, written solo" },
+  { value: "265", unit: "routes", note: "REST endpoints in production" },
+  { value: "420", unit: "tables", note: "across 9 domain schemas" },
+  { value: "399", unit: "cases", note: "integration tests in 40 suites" },
 ];

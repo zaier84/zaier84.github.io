@@ -1,18 +1,16 @@
 export const profile = {
   name: "Muhammad Zaier Ahmad",
   title: "Backend Engineer",
-  // Short hook for the hero — first-person, and every clause names something
-  // that actually exists and can be clicked.
-  tagline:
-    "Backend engineer building systems that have to be correct — a multi-tenant SaaS ERP where every posting commits atomically or not at all, a zero-dependency orchestration library published on npm, and a keyboard-layout compiler written in Go.",
-  // Full bio for the About section — mirrors the résumé summary so the two
-  // documents agree, keeps ATS keywords, and carries the remote-work signal.
-  bio: "Backend and systems-focused engineer working in Go, Node.js, TypeScript, and Lua. Currently building fin-erp solo — a multi-tenant, multi-reseller SaaS ERP covering General Ledger, AP/AR, Inventory, and Procure-to-Pay — while maintaining penstock, a zero-dependency workflow orchestration library published on npm, and capo, a Go compiler for a keyboard-layout DSL with four output targets. Grounded in systems programming (C/C++, Go), REST API design, multi-tenancy and RBAC, and test-driven delivery. Based in Lahore (PKT, UTC+5) — open to remote work globally.",
+
+  // The thesis. The most characteristic true sentence about the work, and the
+  // organising idea for the whole page: everything here guarantees something.
+  thesis: "Every posting balances — or it rolls back.",
+  lede: "I build backend systems around invariants that have to hold: a 420-table ERP ledger, a library that undoes its own work, a compiler that emits the same bytes every run.",
+
+  // Margin note beside the first build. Deliberately not its own section.
+  note: "Backend and systems engineer in Lahore, working in Go, Node.js, TypeScript and Lua. Finishing a software engineering degree at the University of Central Punjab. Open to remote work.",
+
   location: "Lahore, Pakistan",
-  // Cycled in the hero. Every entry is a title the résumé actually supports.
-  roles: ["Backend Engineer", "Systems Engineer", "Founder & Lead Engineer"],
-  // Live status line in the hero.
-  status: "Currently — building fin-erp, solo",
   contact: {
     email: "zaier8284@gmail.com",
     github: "https://github.com/zaier84/",

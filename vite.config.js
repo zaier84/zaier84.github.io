@@ -35,7 +35,6 @@ export default defineConfig({
         // tweak doesn't invalidate the whole bundle in visitors' caches.
         manualChunks: {
           react: ['react', 'react-dom', 'react-router-dom'],
-          motion: ['framer-motion'],
         },
       },
     },

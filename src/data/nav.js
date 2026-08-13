@@ -1,10 +1,13 @@
-// Single nav model, shared by Navbar, MobileMenu and the command palette.
+// Single nav model, shared by the masthead and the tick rail.
+//
+// Evidence first: there is no "about" destination. The bio is a margin note
+// beside the first build, so the nav points only at things worth jumping to.
 export const navLinks = [
-  { label: "About", href: "#about", id: "about" },
-  { label: "Projects", href: "#projects", id: "projects" },
-  { label: "Experience", href: "#experience", id: "experience" },
+  { label: "Work", href: "#work", id: "work" },
+  { label: "Measures", href: "#measures", id: "measures" },
+  { label: "Record", href: "#record", id: "record" },
   { label: "Contact", href: "#contact", id: "contact" },
 ];
 
-// `hero` is tracked for the active-section indicator but isn't a nav item.
-export const sectionIds = ["hero", ...navLinks.map((l) => l.id)];
+// `thesis` is tracked by the rail for position but isn't a nav destination.
+export const sectionIds = ["thesis", ...navLinks.map((l) => l.id)];

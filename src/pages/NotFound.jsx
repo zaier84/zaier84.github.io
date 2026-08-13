@@ -1,46 +1,32 @@
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { staggerContainer, fadeUp } from '@/lib/motion';
-import { useScramble } from '@/lib/useScramble';
-
+/**
+ * Off the scale. Stays in the instrument register rather than reaching for a
+ * segfault joke — the rest of the page never plays a terminal, so this cannot
+ * either.
+ */
 export function NotFound() {
-  const [code] = useScramble('SIGSEGV', { speed: 0.6 });
-
   return (
-    <section className="flex min-h-[80vh] items-center justify-center px-6">
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        animate="visible"
-        className="text-center"
-      >
-        <motion.p
-          variants={fadeUp}
-          className="font-mono text-text-tertiary text-xs tracking-[0.3em] uppercase mb-6"
+    <div className="mx-auto grid max-w-plate grid-cols-1 gap-y-6 px-6 py-28 md:grid-cols-[7rem_1fr] md:gap-x-10 md:px-10 md:py-40 lg:grid-cols-[9rem_1fr]">
+      <div className="ruler hidden pt-[0.45rem] md:block">
+        <div className="pl-5">
+          <span aria-hidden className="mb-3 block h-px w-7 bg-oxide" />
+          <p className="font-data text-[11px] leading-none text-bone-dim">404</p>
+        </div>
+      </div>
+
+      <div>
+        <h1 className="font-display max-w-[14ch] text-build font-semibold text-bone">
+          Nothing is recorded at this address.
+        </h1>
+        <p className="mt-7 max-w-measure leading-relaxed text-bone-dim">
+          The page you asked for is not part of this document.
+        </p>
+        <a
+          href="/"
+          className="mt-10 inline-flex items-center gap-2 rounded-sm border border-rule-strong px-4 py-2 font-data text-[11px] text-bone transition-colors duration-150 hover:border-oxide hover:text-oxide"
         >
-          Error 404 · <span className="text-accent">{code}</span>
-        </motion.p>
-        <motion.h1
-          variants={fadeUp}
-          className="font-display text-text-primary text-6xl sm:text-7xl font-semibold tracking-tight leading-none mb-6"
-        >
-          Null pointer.
-        </motion.h1>
-        <motion.p variants={fadeUp} className="font-mono text-text-secondary text-sm mb-2">
-          <span className="text-text-tertiary">{'>'}</span> the page you requested dereferences to nothing.
-        </motion.p>
-        <motion.p variants={fadeUp} className="text-text-tertiary text-sm mb-10">
-          It moved, or it never existed.
-        </motion.p>
-        <motion.div variants={fadeUp}>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 rounded-lg border border-border-strong text-text-primary px-5 py-2.5 font-mono text-sm hover:border-accent hover:text-accent transition-colors duration-200"
-          >
-            <span aria-hidden>←</span> return home
-          </Link>
-        </motion.div>
-      </motion.div>
-    </section>
+          Back to the top of the plate
+        </a>
+      </div>
+    </div>
   );
 }

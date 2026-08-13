@@ -1,33 +1,25 @@
-import { Navbar } from './Navbar';
+import { Masthead } from './Masthead';
 import { Footer } from './Footer';
-import { ScrollProgress } from './ScrollProgress';
-import { CommandPalette } from './CommandPalette';
-import { useLenis } from '@/lib/useLenis';
 
 export function Layout({ children }) {
-  useLenis();
-
   return (
-    <div className="relative bg-bg-primary text-text-primary min-h-screen flex flex-col overflow-x-clip">
+    <div className="flex min-h-screen flex-col bg-ground text-bone">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-bg-elevated focus:border focus:border-border-strong focus:font-mono focus:text-xs"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:border focus:border-rule-strong focus:bg-raised focus:px-4 focus:py-2 focus:font-data focus:text-xs"
       >
         Skip to content
       </a>
 
-      <ScrollProgress />
-      <Navbar />
+      <Masthead />
 
-      {/* tabIndex makes <main> a valid focus target so "Skip to content"
-          actually moves the keyboard caret, not just the scroll position. */}
+      {/* tabIndex makes <main> a valid focus target, so the skip link moves the
+          keyboard caret and not just the scroll position. */}
       <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
         {children}
       </main>
 
       <Footer />
-
-      <CommandPalette />
     </div>
   );
 }

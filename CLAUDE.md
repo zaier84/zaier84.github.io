@@ -2,132 +2,154 @@
 
 ## Project Overview
 
-Personal portfolio site for Muhammad Zaier Ahmad, a Backend Engineer. Built with React 18 + Vite.
+Personal portfolio site for Muhammad Zaier Ahmad, a Backend Engineer. React 18 + Vite,
+deployed to GitHub Pages at `zaier84.github.io` (a user site, so Vite's base stays `/`).
+
+## Design direction — "Invariant"
+
+The page is built as a **precision-instrument plate**. Everything Zaier builds guarantees
+something, so every project is stated as the invariant it holds:
+
+| Build | Invariant |
+|---|---|
+| fin-erp | Every posting balances — or it rolls back. |
+| penstock | It runs forward. On failure it walks back. |
+| capo | One source, four targets. Byte-identical, every run. |
+| focus.nvim | The timer never blocks the editor. |
+
+That device drives the layout, the copy and the one signature moment. Three earlier versions
+of this site swapped the accent colour (amber → indigo → emerald) without changing the form;
+this one changes the form and keeps the content.
+
+**Deliberately avoided**, because they are what LLM-generated portfolios converge on:
+`01 / 02 / 03` section numbering, mono uppercase `tracking-[0.25em]` eyebrows, terminal
+costume (prompt glyphs, blinking carets, text scramble), a pinging "available for work" dot,
+custom cursors, magnetic buttons, ⌘K palettes, film grain, count-up numbers, WebGL noise
+fields, smooth-scroll hijacking, scroll-progress bars, glassmorphism, gradient text, bento
+grids, and the three stock palettes (near-black + acid accent, cream + serif + terracotta,
+broadsheet hairline columns). Do not reintroduce these.
 
 ## Tech Stack
 
-- **Framework:** React 18 + Vite
-- **Styling:** Tailwind CSS v3 (design tokens via CSS custom properties in `src/index.css`)
-- **Animation:** Framer Motion v12
-- **Routing:** React Router v7
-- **Smooth scroll:** Lenis
-- **WebGL:** ogl (dynamically imported — code-split chunk)
-- **Command palette:** cmdk
+- **Framework:** React 18 + Vite 5
+- **Styling:** Tailwind CSS v3 (design tokens as CSS custom properties in `src/index.css`)
+- **Routing:** React Router v7 (two routes; backs the `dist/404.html` SPA shim)
+- **Animation:** none. There is no animation library — the single signature motion is CSS.
 
 ## Project Structure
 
 ```
 src/
-  components/         # Reusable UI components
-    About.jsx         # Bio + skills spotlight stack
-    CommandPalette.jsx # ⌘K palette (cmdk) — navigate, actions, external links
-    Contact.jsx       # Social links + contact form (Formspree)
-    Credentials.jsx   # Education + certifications grid
-    Experience.jsx    # Professional timeline + Credentials
-    Footer.jsx        # Colophon with live local time
-    Hero.jsx          # Full-bleed hero: shader, scramble roles, live time, CTA
-    Layout.jsx        # Root layout: Lenis, CommandPalette, Cursor
-    MagneticButton.jsx # Magnetic hover wrapper (pointer tracking)
-    MobileMenu.jsx    # Full-screen mobile nav overlay
-    Navbar.jsx        # Sticky nav with active-section indicator + ⌘K button
-    ProjectCard.jsx   # Card with cover-button pattern (article + absolute button)
-    ProjectDrawer.jsx # Slide-in detail drawer for project expand
-    Projects.jsx      # Filterable project grid + ProjectDrawer
-    ScrollProgress.jsx # Thin top progress bar
-    SectionShell.jsx  # 12-col grid shell shared by all content sections
-    ShaderField.jsx   # WebGL flow-field background (ogl, domain-warp FBM)
-    Stats.jsx         # Count-up metrics band
+  components/
+    BalanceBar.jsx    # SIGNATURE: beam settles into equilibrium once on load
+    Build.jsx         # one build, led by its invariant
+    Builds.jsx        # the work section + the bio margin note
+    Contact.jsx       # direct addresses only, no form
+    Footer.jsx        # copyright + colophon
+    Layout.jsx        # skip link, masthead, <main tabIndex={-1}>, footer
+    Masthead.jsx      # flat ruled header; second nav row on mobile, no drawer
+    Readouts.jsx      # instrument panel of fin-erp figures (static, not counters)
+    Record.jsx        # roles, credentials, and the equipment list
+    Section.jsx       # THE structural unit — gutter ruler + major tick + label
+    Thesis.jsx        # opens on the thesis sentence, not on a name
   context/
-    ThemeContext.jsx   # Dark/light theme context + localStorage persistence
+    ThemeContext.jsx  # theme + localStorage; pairs with the pre-paint script in index.html
   data/               # All content — edit here, never hardcode in components
-    education.js      # Degree + certifications
-    experience.js     # Professional roles / work history
-    nav.js            # Shared nav model (navLinks, sectionIds)
-    profile.js        # Name, title, tagline, bio, roles, status, contact, socialLinks
-    projects.js       # Portfolio projects + projectFilters
-    skills.js         # Skills by category
-    stats.js          # Headline metrics for the Stats band
-  lib/                # Hooks and animation utilities
-    motion.js         # Shared Framer Motion variants (EASE, fadeUp, blurReveal, lineChild…)
-    useActiveSection.js # IntersectionObserver-based active nav section
-    useFocusTrap.js   # Focus trap + restore for overlays (drawer, palette, mobile menu)
-    useLenis.js       # Mounts Lenis smooth scroll + `scrollToId` (single scroll driver)
-    useLocalTime.js   # Live clock via Intl.DateTimeFormat (updates every second)
-    useScramble.js    # RAF text-scramble/decode effect
-    useScrollLock.js  # Refcounted body-scroll lock shared by every overlay
+    education.js      # degree + certifications (each carries `start` for <time datetime>)
+    experience.js     # professional roles
+    nav.js            # navLinks + sectionIds
+    profile.js        # name, thesis, lede, note (bio), contact, socialLinks
+    projects.js       # the builds — each with an `invariant`
+    skills.js         # the equipment list, rendered inside Record
+    stats.js          # the readouts
+  lib/
+    useActiveSection.js  # IntersectionObserver active-section for the masthead
   pages/
-    Home.jsx          # Route "/" — section composition order
-    NotFound.jsx      # 404 SIGSEGV theme
-  index.css           # Design tokens (:root + [data-theme="light"]), base styles, Lenis, cursor
+    Home.jsx          # thesis → work → measures → record → contact
+    NotFound.jsx      # off-scale 404, same instrument register
+  index.css           # tokens, base, the `settle` keyframe, the `.ruler` gutter
 ```
 
 ## Design System
 
-### Color Tokens (`src/index.css`)
+### Colour tokens (`src/index.css`)
 
-All colors are CSS custom properties consumed via Tailwind's token aliases
-(`bg-bg-primary`, `text-text-secondary`, `border-border-strong`, `bg-accent`, etc.).
-Never use raw hex values in components — always reference the token.
+Warm bone type on a cool petrol ground, with one oxide signal used as **flat marks, never
+glow**. Consumed via Tailwind aliases: `bg-ground`, `bg-raised`, `text-bone`, `text-bone-dim`,
+`border-rule`, `border-rule-strong`, `text-oxide`, `bg-oxide`, `text-oxide-on`.
 
-**Dark mode (`:root`):** Warm charcoal family (`#111110` base) + emerald accent (`#34d399`).
-**Light mode (`[data-theme="light"]`):** Warm linen (`#f5f0e8` base) + emerald-700 (`#047857`).
+**Dark (`:root`):** `--ground #101b1f` · `--bone #e8e2d6` · `--oxide #d4762a`
+**Light (`[data-theme="light"]`):** a true inversion — bone paper, petrol ink, darkened oxide.
 
-To change the palette, update only `:root` / `[data-theme="light"]` in `src/index.css`.
-
-**Contrast rules — do not regress these:**
-- Every text token clears WCAG AA (4.5:1) against `--bg-primary`; measured ratios
-  are noted inline in `src/index.css`.
-- **Never put `text-white` on `bg-accent`** — that pairing is 1.9:1 in dark. Filled
-  buttons use `bg-accent-strong text-accent-fg` (hover: `bg-accent-strong-hover`).
-- `--border` is decorative hairline only. Anything outlining an *interactive*
-  control uses `--border-strong`, which meets the 3:1 non-text threshold.
+**Contrast rules — do not regress these.** Measured ratios are documented inline in
+`src/index.css`:
+- Every text token clears WCAG AA (4.5:1) against `--ground` in both themes.
+- `--rule` is decorative hairline only. Anything outlining an *interactive* control uses
+  `--rule-strong`, which clears the 3:1 non-text threshold.
+- Filled signal fields use `bg-oxide text-oxide-on` — never white on oxide.
 
 ### Typography
 
-- **Display:** Space Grotesk (`font-display`) — kinetic headlines only
-- **Body:** Inter (`font-sans`) — all prose
-- **Mono:** JetBrains Mono (`font-mono`) — labels, tags, badges, code
-- **Display scale:** `text-display-sm` / `text-display` / `text-display-lg` (clamp-based, defined in `tailwind.config.js`)
-- Body `line-height: 1.6` set globally; tight headlines use `leading-[0.92]`
+- **Display:** Archivo (`font-display`), set **expanded** via `font-stretch: 118%`. The width
+  axis is where the page gets its voice. Reserved for the thesis, build names and readouts.
+- **Body:** Instrument Sans (`font-sans`).
+- **Data:** Spline Sans Mono (`font-data`) — readouts, labels, tick values, always tabular.
+- Scale: `text-thesis` / `text-build` / `text-readout`, clamp-based, in `tailwind.config.js`.
+- One `<link>` in `index.html`. Never move fonts to a CSS `@import` — it is render-blocking.
 
-### Design Direction
+### Structure — the gutter ruler replaces section numbers
 
-- Warm, editorial — typographic clarity is the primary visual interest
-- Restrained motion: scroll-triggered reveal (Framer Motion viewport), text scramble, count-up
-- WebGL shader (ShaderField) is the only "heavy" visual — sits behind content, subtly animated
-- Custom cursor on fine-pointer + motion-allowed devices only
-- `prefers-reduced-motion`: shader → static gradient, no Lenis, no cursor, scramble resolves instantly
-- No looping animations except the shader and the hero role cycle (2800ms interval)
+`Section.jsx` renders a left gutter carrying a continuous ruler (a hairline plus minor ticks,
+drawn with `.ruler` in CSS) and a major tick with the section name. Every section draws one, so
+the measure runs unbroken and stays locked to the content grid. **This is why there are no
+section numbers**: position on the rule already says where you are. It also replaces the
+scroll-progress bar.
+
+`labelAs` controls whether the gutter name is the section's `<h2>`. Where the content supplies
+its own heading (Thesis has the `<h1>`, Contact has its own `<h2>`), pass `labelAs="p"` so the
+outline stays valid; the section is then named by `aria-label` instead.
+
+### Motion
+
+**There is exactly one animation.** `BalanceBar` tilts and settles into equilibrium once on
+load (`settle` keyframe, ~1.9s), then is still forever. It never loops and never replays.
+Everything else is a focus or hover state. Under `prefers-reduced-motion` the beam renders
+already level. Do not add scroll-triggered reveals.
 
 ## Coding Conventions
 
-- **Components:** Functional only, PascalCase names, **named exports** (no default exports)
-- **Variables:** camelCase
-- **HTML:** Semantic elements (`<section>`, `<article>`, `<nav>`, `<main>`, `<time>`, `<address>`)
-- **Styles:** Tailwind utility classes; dynamic values via `style={{}}` only when CSS vars or motion values require it
-- **No raw hex** — always use design token classes
-- **Never use the `/opacity` colour modifier on a token colour** (e.g. `text-text-primary/[0.05]`). The tokens are bare `var()` values with no `<alpha-value>` slot, so Tailwind emits **no rule at all** and the element silently renders at full opacity. Use the separate `opacity-*` utility instead. (`bg-black/60` is fine — that's a real colour, not a token.)
-- **Card with links pattern:** `<article>` → absolute cover `<button>` (z-0) → `pointer-events-none` content wrapper (z-10) → real `<a>` links at z-10 with `pointer-events-auto`. Never nest `<a>` or `<button>` inside another interactive element. The cover button needs a **`ring-inset`** focus ring — the card is `overflow-hidden`, so the global `outline-offset: 3px` ring is clipped away.
-- **Overlays:** every overlay uses `useScrollLock` (refcounted — never set `body.overflow` directly) and `useFocusTrap`, and puts `data-lenis-prevent` on its scrollable region.
-- **AnimatePresence:** only direct, *keyed* children are tracked. Wrapping plain `<div>`s silently disables exit animations.
-- **In-page scrolling** goes through `scrollToId` from `@/lib/useLenis` so there is one scroll driver and focus follows the jump.
-- **ShaderField theme reactivity:** Pass `key={theme}` from the parent so ShaderField remounts and re-reads CSS vars on theme change. Do not pass theme as a prop.
-- **ogl / heavy deps:** Always dynamically import (`import('ogl')` inside `useEffect`) to keep the main bundle lean.
+- **Components:** functional, PascalCase, **named exports** (no default exports).
+- **HTML:** semantic elements (`<section>`, `<article>`, `<dl>`, `<time>`, `<figure>`).
+- **Styles:** Tailwind utilities; `style={{}}` only where a CSS variable requires it.
+- **No raw hex** in components — always a token class.
+- **Never use the `/opacity` colour modifier on a token colour** (e.g. `text-bone/[0.05]`). The
+  tokens are bare `var()` values with no `<alpha-value>` slot, so Tailwind emits **no rule at
+  all** and the element silently renders at full opacity. Use the `opacity-*` utility instead.
+- **No overlays.** There is no drawer, modal or command palette, so the codebase needs no focus
+  trap or scroll lock. Mobile navigation is a second masthead row, not a drawer. Keep it that
+  way unless there is a strong reason otherwise.
+- **All work is on the page.** No cover-button cards, no expand-to-read. The work is the
+  evidence, so hiding it behind an interaction works against the brief.
+- **Accessibility floor:** visible focus on every control; the skip link moves focus into
+  `<main tabIndex={-1}>`; one `<h1>`, properly nested `<h2>`/`<h3>` beneath it; `<time>` always
+  carries `dateTime` (the data files provide `start` for this).
 
 ## Content Updates
 
-All visible copy lives in `src/data/`. To update the portfolio:
-- Personal info, bio, tagline → `profile.js`
-- Work history → `experience.js`
-- Projects → `projects.js`
-- Skills → `skills.js`
-- Education / certs → `education.js`
+All visible copy lives in `src/data/`:
+- Thesis, lede, bio note, contact → `profile.js`
+- The builds and their invariants → `projects.js`
+- Roles → `experience.js` · Degree and certs → `education.js`
+- Readout figures → `stats.js` · Equipment list → `skills.js`
 
-## Environment Variables
+Every figure must be true and checkable against the résumé in `public/`. No derived or
+unfalsifiable numbers.
 
-| Variable | Purpose |
-|---|---|
-| `VITE_FORMSPREE_ID` | Formspree form ID — contact form is hidden when unset |
+## Deployment
+
+`.github/workflows/deploy.yml` runs `npm ci` → `npm run lint` → `npm run build` on pushes to
+`main`, then publishes `dist` to GitHub Pages. `vite.config.js` copies `index.html` to
+`dist/404.html` so deep links boot the SPA instead of GitHub's 404.
 
 ## Dev Commands
 
@@ -135,5 +157,5 @@ All visible copy lives in `src/data/`. To update the portfolio:
 npm run dev      # Start dev server (localhost:5173)
 npm run build    # Production build
 npm run preview  # Preview production build
-npm run lint     # ESLint check
+npm run lint     # ESLint check (jsx-a11y + react-hooks)
 ```

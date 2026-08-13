@@ -2,60 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Design Tokens ─────────────────────────────────────────────
-   Contrast ratios noted below are measured against --bg-primary.
-   Text tokens clear WCAG AA (4.5:1); --border-strong clears the 3:1
-   non-text threshold because it outlines interactive controls.
-   --border stays hairline-subtle and is only ever decorative.
+/* ─── Design tokens ─────────────────────────────────────────────
+   Direction: "Invariant" — a precision-instrument plate.
+   Warm bone type on a cool petrol ground, with one oxide signal used
+   as flat marks and never as glow.
+
+   Contrast ratios below are measured against --ground and are the
+   floor, not a target: every text token clears WCAG AA (4.5:1) and
+   --rule-strong clears the 3:1 non-text threshold because it outlines
+   interactive controls. --rule is decorative hairline only.
    ─────────────────────────────────────────────────────────────── */
 
 :root {
-  --bg-primary:     #111110; /* warm almost-black */
-  --bg-surface:     #191917; /* warm card lift — clear separation from bg */
-  --bg-elevated:    #222220; /* drawers, active pills */
-  --text-primary:   #f2ede8; /* 16.2:1 — warm off-white */
-  --text-secondary: #a3a09a; /*  7.4:1 — body / secondary */
-  --text-tertiary:  #837f79; /*  4.7:1 — mono micro-labels */
-  --border:         #272624; /* decorative hairline only */
-  --border-strong:  #666259; /*  3.1:1 — outlines interactive controls */
-  --accent:         #34d399; /*  9.8:1 as text on --bg-primary */
-  --accent-hover:   #6ee7b7;
-  --accent-soft:    rgba(52, 211, 153, 0.08);
-  --bg-nav:         rgba(17, 17, 16, 0.80);
-
-  /* Filled-button pair. Kept separate from --accent so the foreground is
-     always legible: white on emerald-400 is 1.9:1 and fails badly. */
-  --accent-strong:       #34d399;
-  --accent-strong-hover: #6ee7b7;
-  --accent-fg:           #111110; /* 9.8:1 on --accent-strong */
-
-  /* maximal layer */
-  --shader-a:       #111110;
-  --shader-b:       #34d399; /* emerald flow */
-  --shader-scrim:   rgba(17, 17, 16, 0.50);
+  --ground:      #101b1f; /* deep petrol — a real hue, not near-black */
+  --raised:      #16252a; /* plates and panels */
+  --bone:        #e8e2d6; /* 13.6:1 — primary type */
+  --bone-dim:    #a8a294; /*  6.9:1 — secondary type */
+  --rule:        #2b3a40; /* decorative hairline / minor ticks */
+  --rule-strong: #55707a; /*  3.3:1 — outlines interactive controls */
+  --oxide:       #d4762a; /*  5.4:1 — the single signal */
+  --on-oxide:    #101b1f; /*  5.4:1 — type on a filled oxide field */
 }
 
 [data-theme="light"] {
-  --bg-primary:     #f5f0e8; /* warm linen — clearly beige, not off-white */
-  --bg-surface:     #faf7f0; /* lighter linen for cards */
-  --bg-elevated:    #fffcf4; /* warmest near-white for drawers */
-  --text-primary:   #1a1816; /* 15.6:1 — warm near-black */
-  --text-secondary: #5a5751; /*  6.4:1 */
-  --text-tertiary:  #6b6862; /*  5.0:1 */
-  --border:         #e2dbd0; /* decorative hairline only */
-  --border-strong:  #8b8477; /*  3.3:1 */
-  --accent:         #047857; /*  5.5:1 as text on linen (emerald-700) */
-  --accent-hover:   #065f46; /* emerald-800 */
-  --accent-soft:    rgba(5, 150, 105, 0.08);
-  --bg-nav:         rgba(245, 240, 232, 0.90);
-
-  --accent-strong:       #047857;
-  --accent-strong-hover: #065f46;
-  --accent-fg:           #ffffff; /* 5.5:1 on --accent-strong */
-
-  --shader-a:       #f5f0e8;
-  --shader-b:       #059669;
-  --shader-scrim:   rgba(245, 240, 232, 0.45);
+  --ground:      #e8e2d6; /* the inversion: bone paper */
+  --raised:      #f2eee5;
+  --bone:        #101b1f; /* 13.6:1 */
+  --bone-dim:    #4d5a5e; /*  5.5:1 */
+  --rule:        #d5cdbc;
+  --rule-strong: #7d7868; /*  3.4:1 */
+  --oxide:       #9a4a12; /*  4.8:1 — darkened so it still reads on paper */
+  --on-oxide:    #f2eee5; /*  5.4:1 */
 }
 
 /* ─── Base ──────────────────────────────────────────────────── */
@@ -68,76 +45,92 @@
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* No smooth-scroll driver: in-page jumps are instant and land focus. */
   }
 
   body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--ground);
+    color: var(--bone);
+    font-family: 'Instrument Sans', system-ui, sans-serif;
     font-size: 1rem;
-    line-height: 1.6;
-    font-feature-settings: 'cv11', 'ss01';
-    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.55;
   }
 
-  h1, h2, h3 {
-    letter-spacing: -0.022em;
-  }
-
-  /* Display face for kinetic headlines. */
+  /* The display face carries the personality through its width axis.
+     Reserved for the thesis and the build names — nothing else. */
   .font-display {
-    font-feature-settings: 'ss01', 'ss02';
-    letter-spacing: -0.03em;
+    font-family: 'Archivo', 'Instrument Sans', system-ui, sans-serif;
+    font-stretch: 118%;
+    letter-spacing: -0.02em;
+    line-height: 0.94;
+  }
+
+  /* Readouts, labels and tick values. Always tabular. */
+  .font-data {
+    font-family: 'Spline Sans Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
   }
 
   code, kbd, samp, pre {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: 'Spline Sans Mono', ui-monospace, monospace;
   }
 
+  /* Anchor targets clear the masthead. */
   [id] {
-    scroll-margin-top: 6rem;
+    scroll-margin-top: 5rem;
   }
 
   ::selection {
-    background-color: var(--accent-strong);
-    color: var(--accent-fg);
+    background-color: var(--oxide);
+    color: var(--on-oxide);
   }
 
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--oxide);
     outline-offset: 3px;
-    border-radius: 3px;
+    border-radius: 2px;
   }
 }
 
-/* ─── Lenis smooth scroll ───────────────────────────────────── */
+/* ─── Signature: the balance bar ────────────────────────────────
+   The only animation on the site. Two pans settle into equilibrium
+   once on load and are then still forever — it never loops and never
+   replays. Everything else is a focus or hover state.
+   ─────────────────────────────────────────────────────────────── */
 
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-/* ─── Kinetic type helpers ──────────────────────────────────── */
-
-/* Mask wrapper for per-line / per-word reveals. */
-.reveal-mask {
-  overflow: hidden;
-  display: block;
+@keyframes settle {
+  0%   { transform: rotate(var(--tilt)); }
+  55%  { transform: rotate(calc(var(--tilt) * -0.28)); }
+  80%  { transform: rotate(calc(var(--tilt) * 0.09)); }
+  100% { transform: rotate(0deg); }
 }
 
-/* Tabular figures for the live clock + stat counters so they don't jitter. */
-.tnum {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum';
+.beam {
+  --tilt: -7deg;
+  /* fill-box so the percentage origin resolves against the beam's own bounding
+     box — its midpoint is the fulcrum. */
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: settle 1900ms cubic-bezier(0.34, 1.2, 0.4, 1) 250ms both;
+}
+
+/* The gutter ruler. Minor ticks are a repeating gradient rather than markup,
+   and every section draws its own, so the measure is continuous down the page
+   and always aligned to the content grid. */
+.ruler {
+  background-image:
+    linear-gradient(to bottom, var(--rule), var(--rule)),
+    repeating-linear-gradient(
+      to bottom,
+      var(--rule) 0 1px,
+      transparent 1px 14px
+    );
+  background-size: 1px 100%, 7px 100%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat, repeat-y;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -147,6 +140,11 @@ html.lenis body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  }
+
+  /* Render the beam already balanced rather than mid-swing. */
+  .beam {
+    animation: none;
+    transform: none;
   }
 }

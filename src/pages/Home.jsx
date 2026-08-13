@@ -1,18 +1,21 @@
-import { Hero } from '@/components/Hero';
-import { About } from '@/components/About';
-import { Projects } from '@/components/Projects';
-import { Stats } from '@/components/Stats';
-import { Experience } from '@/components/Experience';
+import { Thesis } from '@/components/Thesis';
+import { Builds } from '@/components/Builds';
+import { Readouts } from '@/components/Readouts';
+import { Record } from '@/components/Record';
 import { Contact } from '@/components/Contact';
 
+/**
+ * Evidence first: the thesis states what the work guarantees, then the work
+ * itself, then the figures behind it. There is no "about" section — the bio is
+ * a margin note beside the builds.
+ */
 export function Home() {
   return (
     <>
-      <Hero />
-      <About />
-      <Projects />
-      <Stats />
-      <Experience />
+      <Thesis />
+      <Builds />
+      <Readouts />
+      <Record />
       <Contact />
     </>
   );

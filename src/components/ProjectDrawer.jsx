@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { EASE } from '@/lib/motion';
+import { useFocusTrap } from '@/lib/useFocusTrap';
 
 const panelStagger = {
   hidden: {},
@@ -11,7 +12,16 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE } },
 };
 
+const outlineLink =
+  'inline-flex items-center gap-2 font-mono text-sm text-text-primary px-4 py-2 rounded-lg ' +
+  'border border-border-strong hover:border-accent hover:text-accent transition-colors duration-200';
+
 export function ProjectDrawer({ project, onClose }) {
+  // `aria-modal` promises the rest of the page is inert; the trap makes it true.
+  const panelRef = useFocusTrap(true);
+  const { links = {}, artwork } = project;
+  const hasLinks = Object.keys(links).length > 0;
+
   return (
     <>
       <motion.div
@@ -20,13 +30,16 @@ export function ProjectDrawer({ project, onClose }) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25 }}
         onClick={onClose}
+        aria-hidden
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
       />
 
       <motion.aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={`${project.title} details`}
+        tabIndex={-1}
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
@@ -39,6 +52,7 @@ export function ProjectDrawer({ project, onClose }) {
             {project.type}
           </p>
           <button
+            type="button"
             onClick={onClose}
             aria-label="Close"
             className="flex h-8 w-8 -mr-1 items-center justify-center rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors duration-200"
@@ -49,10 +63,13 @@ export function ProjectDrawer({ project, onClose }) {
           </button>
         </div>
 
+        {/* data-lenis-prevent keeps the smooth-scroll driver from stealing the
+            wheel events that belong to this panel. */}
         <motion.div
           variants={panelStagger}
           initial="hidden"
           animate="visible"
+          data-lenis-prevent
           className="px-7 py-8 space-y-8 flex-1 overflow-y-auto"
         >
           <motion.div variants={item}>
@@ -64,11 +81,23 @@ export function ProjectDrawer({ project, onClose }) {
             )}
           </motion.div>
 
+          {artwork && (
+            <motion.div variants={item} className="overflow-hidden rounded-lg border border-border">
+              <img
+                src={artwork.src}
+                alt={artwork.alt}
+                loading="lazy"
+                decoding="async"
+                className="block w-full"
+              />
+            </motion.div>
+          )}
+
           <motion.p variants={item} className="text-text-secondary text-sm leading-relaxed">
             {project.description}
           </motion.p>
 
-          {project.highlights.length > 0 && (
+          {project.highlights?.length > 0 && (
             <motion.div variants={item}>
               <p className="font-mono text-text-tertiary text-xs tracking-[0.22em] uppercase mb-4">
                 Highlights
@@ -111,29 +140,29 @@ export function ProjectDrawer({ project, onClose }) {
             </motion.div>
           )}
 
-          {Object.keys(project.links).length > 0 && (
+          {hasLinks && (
             <motion.div variants={item}>
               <p className="font-mono text-text-tertiary text-xs tracking-[0.22em] uppercase mb-4">
                 Links
               </p>
               <div className="flex flex-wrap gap-2">
-                {project.links.github && (
+                {links.npm && (
                   <a
-                    href={project.links.github}
+                    href={links.npm}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 font-mono text-sm text-text-primary px-4 py-2 rounded-lg border border-border-strong hover:border-accent hover:text-accent transition-colors duration-200"
+                    className="inline-flex items-center gap-2 font-mono text-sm text-accent-fg bg-accent-strong px-4 py-2 rounded-lg hover:bg-accent-strong-hover transition-colors duration-200"
                   >
+                    View on npm →
+                  </a>
+                )}
+                {links.github && (
+                  <a href={links.github} target="_blank" rel="noopener noreferrer" className={outlineLink}>
                     GitHub →
                   </a>
                 )}
-                {project.links.live && (
-                  <a
-                    href={project.links.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 font-mono text-sm text-white bg-accent px-4 py-2 rounded-lg hover:bg-accent-hover transition-colors duration-200"
-                  >
+                {links.live && (
+                  <a href={links.live} target="_blank" rel="noopener noreferrer" className={outlineLink}>
                     Live →
                   </a>
                 )}

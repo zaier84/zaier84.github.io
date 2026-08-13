@@ -1,30 +1,54 @@
 export const skills = [
   {
     category: "Languages",
-    items: ["C/C++", "Go", "Python", "JavaScript", "SQL", "Dart", "Java"],
+    items: ["Go", "TypeScript", "JavaScript (ESM)", "SQL", "Python", "Lua", "C/C++", "Dart"],
   },
   {
     category: "Backend",
-    items: ["Node.js", "Express.js", "FastAPI", "RESTful APIs", "Software Architecture", "System Design"],
+    items: [
+      "Node.js",
+      "Express 5",
+      "FastAPI",
+      "REST API Design",
+      "Orchestration & Saga Patterns",
+      "Multi-Tenancy",
+      "RBAC",
+      "JWT Auth",
+      "Async I/O & Concurrency",
+    ],
   },
   {
-    category: "Frontend",
-    items: ["React", "Redux Toolkit", "Tailwind CSS", "Flutter"],
+    category: "Systems",
+    items: ["Compiler & Parser Design", "Lexers", "Unicode", "libuv", "Linux"],
   },
   {
     category: "Databases",
-    items: ["MongoDB", "MySQL", "Microsoft SQL Server"],
+    items: [
+      "Microsoft SQL Server",
+      "hierarchyid",
+      "Computed Columns",
+      "Filtered Indexes",
+      "MERGE / HOLDLOCK",
+      "rowversion",
+      "MySQL",
+      "MongoDB",
+    ],
   },
   {
-    category: "Tools",
-    items: ["Git", "GitHub", "GitHub Actions", "Linux", "Docker", "Postman"],
+    category: "Frontend",
+    items: ["React 19", "Vite", "Zustand", "React Router", "Tailwind CSS", "Flutter"],
   },
   {
-    category: "Testing",
-    items: ["TDD", "Go Test"],
-  },
-  {
-    category: "Exploring",
-    items: ["Rust", "Kubernetes", "LangChain"],
+    category: "Testing & Tooling",
+    items: [
+      "Vitest",
+      "supertest",
+      "plenary.nvim",
+      "Git",
+      "Docker",
+      "GitHub Actions",
+      "npm Packaging (ESM/CJS)",
+      "Postman",
+    ],
   },
 ];

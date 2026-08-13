@@ -1,53 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Design Tokens ─────────────────────────────────────────── */
+/* ─── Design Tokens ─────────────────────────────────────────────
+   Contrast ratios noted below are measured against --bg-primary.
+   Text tokens clear WCAG AA (4.5:1); --border-strong clears the 3:1
+   non-text threshold because it outlines interactive controls.
+   --border stays hairline-subtle and is only ever decorative.
+   ─────────────────────────────────────────────────────────────── */
 
 :root {
   --bg-primary:     #111110; /* warm almost-black */
   --bg-surface:     #191917; /* warm card lift — clear separation from bg */
   --bg-elevated:    #222220; /* drawers, active pills */
-  --text-primary:   #f2ede8; /* warm off-white — comfortable for long reading */
-  --text-secondary: #928f8a; /* warm medium gray */
-  --text-tertiary:  #615e5a; /* warm dim labels */
-  --text-mono:      #615e5a;
-  --border:         #272624; /* warm very subtle */
-  --border-strong:  #37342f;
-  --accent:         #34d399; /* emerald-400 — fresh, easy on eyes */
-  --accent-hover:   #6ee7b7; /* emerald-300 */
+  --text-primary:   #f2ede8; /* 16.2:1 — warm off-white */
+  --text-secondary: #a3a09a; /*  7.4:1 — body / secondary */
+  --text-tertiary:  #837f79; /*  4.7:1 — mono micro-labels */
+  --border:         #272624; /* decorative hairline only */
+  --border-strong:  #666259; /*  3.1:1 — outlines interactive controls */
+  --accent:         #34d399; /*  9.8:1 as text on --bg-primary */
+  --accent-hover:   #6ee7b7;
   --accent-soft:    rgba(52, 211, 153, 0.08);
   --bg-nav:         rgba(17, 17, 16, 0.80);
+
+  /* Filled-button pair. Kept separate from --accent so the foreground is
+     always legible: white on emerald-400 is 1.9:1 and fails badly. */
+  --accent-strong:       #34d399;
+  --accent-strong-hover: #6ee7b7;
+  --accent-fg:           #111110; /* 9.8:1 on --accent-strong */
 
   /* maximal layer */
   --shader-a:       #111110;
   --shader-b:       #34d399; /* emerald flow */
   --shader-scrim:   rgba(17, 17, 16, 0.50);
-  --cursor-size:    9px;
-  --cursor-color:   #34d399;
 }
 
 [data-theme="light"] {
   --bg-primary:     #f5f0e8; /* warm linen — clearly beige, not off-white */
   --bg-surface:     #faf7f0; /* lighter linen for cards */
   --bg-elevated:    #fffcf4; /* warmest near-white for drawers */
-  --text-primary:   #1a1816; /* warm near-black */
-  --text-secondary: #5a5751;
-  --text-tertiary:  #8c8985;
-  --text-mono:      #8c8985;
-  --border:         #e2dbd0; /* warm border */
-  --border-strong:  #c9c1b3;
-  --accent:         #059669; /* emerald-600 — WCAG AA on linen */
-  --accent-hover:   #047857; /* emerald-700 */
+  --text-primary:   #1a1816; /* 15.6:1 — warm near-black */
+  --text-secondary: #5a5751; /*  6.4:1 */
+  --text-tertiary:  #6b6862; /*  5.0:1 */
+  --border:         #e2dbd0; /* decorative hairline only */
+  --border-strong:  #8b8477; /*  3.3:1 */
+  --accent:         #047857; /*  5.5:1 as text on linen (emerald-700) */
+  --accent-hover:   #065f46; /* emerald-800 */
   --accent-soft:    rgba(5, 150, 105, 0.08);
   --bg-nav:         rgba(245, 240, 232, 0.90);
+
+  --accent-strong:       #047857;
+  --accent-strong-hover: #065f46;
+  --accent-fg:           #ffffff; /* 5.5:1 on --accent-strong */
 
   --shader-a:       #f5f0e8;
   --shader-b:       #059669;
   --shader-scrim:   rgba(245, 240, 232, 0.45);
-  --cursor-color:   #059669;
 }
 
 /* ─── Base ──────────────────────────────────────────────────── */
@@ -94,8 +102,8 @@
   }
 
   ::selection {
-    background-color: var(--accent);
-    color: #ffffff;
+    background-color: var(--accent-strong);
+    color: var(--accent-fg);
   }
 
   :focus-visible {
@@ -103,18 +111,6 @@
     outline-offset: 3px;
     border-radius: 3px;
   }
-}
-
-/* ─── Film grain overlay ────────────────────────────────────── */
-
-.grain {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ─── Lenis smooth scroll ───────────────────────────────────── */
@@ -128,23 +124,6 @@ html.lenis body {
 }
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-/* ─── Custom cursor ─────────────────────────────────────────── */
-
-/* Applied to <html> only when the JS custom cursor is active (fine pointer,
-   motion allowed). Hides the native cursor on interactive elements too. */
-.cursor-custom,
-.cursor-custom a,
-.cursor-custom button,
-.cursor-custom [role='button'],
-.cursor-custom input,
-.cursor-custom textarea,
-.cursor-custom label {
-  cursor: none;
 }
 
 /* ─── Kinetic type helpers ──────────────────────────────────── */
@@ -169,11 +148,5 @@ html.lenis body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  /* Never hijack the native cursor when motion is reduced. */
-  .cursor-custom,
-  .cursor-custom * {
-    cursor: auto !important;
   }
 }

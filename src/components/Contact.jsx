@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { profile, socialLinks } from '@/data/profile';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
@@ -8,7 +8,7 @@ import { MagneticButton } from '@/components/MagneticButton';
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
 
 const inputClass =
-  'w-full bg-transparent border-b border-border text-text-primary text-sm py-2.5 font-mono ' +
+  'w-full bg-transparent border-b border-border-strong text-text-primary text-sm py-2.5 font-mono ' +
   'placeholder:text-text-tertiary focus:border-accent focus:outline-none ' +
   'transition-colors duration-200';
 
@@ -17,29 +17,31 @@ const labelClass =
 
 export function Contact() {
   const [status, setStatus] = useState('idle');
+  const successRef = useRef(null);
+
+  // The form unmounts on success, which would otherwise drop focus to <body>.
+  useEffect(() => {
+    if (status === 'success') successRef.current?.focus();
+  }, [status]);
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const form = e.currentTarget;
     setStatus('submitting');
     try {
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
-        body: new FormData(e.target),
+        body: new FormData(form),
         headers: { Accept: 'application/json' },
       });
-      if (res.ok) {
-        setStatus('success');
-        e.target.reset();
-      } else {
-        setStatus('error');
-      }
+      setStatus(res.ok ? 'success' : 'error');
     } catch {
       setStatus('error');
     }
   }
 
   return (
-    <SectionShell id="contact" number="04" label="Connect">
+    <SectionShell id="contact" number="04" label="Contact">
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -60,16 +62,17 @@ export function Contact() {
           variants={fadeUp}
           className="font-display text-text-primary text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.05] mb-6 max-w-xl"
         >
-          Let&apos;s build something exceptional.
+          Let&apos;s talk about the hard part.
         </motion.h3>
 
         <motion.p
           variants={fadeUp}
           className="text-text-secondary text-base lg:text-lg leading-relaxed mb-12 max-w-2xl"
         >
-          Always open to interesting conversations, new opportunities, and
-          collaboration. Whether it&apos;s a project idea, a role, or just a
-          hello — I&apos;d love to hear from you.
+          I&apos;m open to backend and systems roles, remote or on-site in Lahore.
+          If you have a schema that won&apos;t normalise, a transaction boundary
+          that leaks, or a service that needs to stop losing money on retries —
+          that&apos;s the conversation I want.
         </motion.p>
 
         <motion.address variants={fadeUp} className="not-italic grid gap-2.5 mb-12 max-w-md">
@@ -84,7 +87,9 @@ export function Contact() {
               <span className="font-mono text-text-tertiary text-xs w-16 shrink-0 tracking-wide">
                 {label}
               </span>
-              <span className="font-mono text-text-secondary text-sm flex-1 group-hover:text-text-primary transition-colors duration-200">
+              {/* min-w-0 + truncate: the LinkedIn slug is 27 unbreakable mono
+                  characters and overflows the row below ~360px without it. */}
+              <span className="font-mono text-text-secondary text-sm flex-1 min-w-0 truncate group-hover:text-text-primary transition-colors duration-200">
                 {display}
               </span>
               <span
@@ -107,14 +112,19 @@ export function Contact() {
             </div>
 
             {status === 'success' ? (
-              <div className="py-8 max-w-md">
+              <div
+                ref={successRef}
+                tabIndex={-1}
+                role="status"
+                className="py-8 max-w-md focus:outline-none"
+              >
                 <p className="font-mono text-accent text-sm mb-2">Message sent.</p>
                 <p className="text-text-secondary text-sm">
                   Thanks for reaching out — I&apos;ll get back to you soon.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate className="space-y-6 max-w-md">
+              <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
                 <div>
                   <label htmlFor="contact-name" className={labelClass}>Name</label>
                   <input
@@ -154,7 +164,10 @@ export function Contact() {
                 </div>
 
                 {status === 'error' && (
-                  <p className="font-mono text-xs text-text-secondary border-l-2 border-accent pl-3">
+                  <p
+                    role="alert"
+                    className="font-mono text-xs text-text-secondary border-l-2 border-accent pl-3"
+                  >
                     Something went wrong. Try emailing directly at{' '}
                     <a
                       href={`mailto:${profile.contact.email}`}
@@ -171,8 +184,8 @@ export function Contact() {
                   type="submit"
                   disabled={status === 'submitting'}
                   strength={0.2}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-accent text-white py-3 font-mono text-sm
-                             hover:bg-accent-hover transition-colors duration-200
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-accent-strong text-accent-fg py-3 font-mono text-sm
+                             hover:bg-accent-strong-hover transition-colors duration-200
                              disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {status === 'submitting' ? 'Sending…' : 'Send Message'}

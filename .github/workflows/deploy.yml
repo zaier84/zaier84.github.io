@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -25,7 +26,14 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - run: npm run lint
+
       - run: npm run build
+        env:
+          # Optional. Add a repository secret of the same name to enable the
+          # contact form; without it the Contact section renders the direct
+          # email/GitHub/npm/LinkedIn links only.
+          VITE_FORMSPREE_ID: ${{ secrets.VITE_FORMSPREE_ID }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

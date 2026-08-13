@@ -23,39 +23,67 @@ const GithubIcon = () => (
   </svg>
 );
 
+const NpmIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    <path d="M0 8.5h24v7H12v1.5H6.5v-1.5H0v-7zm1.5 5.5H3v-4h1.5v4H6V10H1.5v4zm6 0H9v-4h1.5v4H12V10H7.5v4zm6-4v5.5H15V14h1.5v-4h-3zm3 0v4H18v-4h-1.5zm3 0v4H21v-4h-1.5z" />
+  </svg>
+);
+
+const linkClass =
+  'pointer-events-auto inline-flex items-center gap-1.5 font-mono text-[11px] text-text-secondary ' +
+  'px-2.5 py-1 rounded-md border border-border hover:border-accent hover:text-accent ' +
+  'transition-colors duration-200';
+
 export function ProjectCard({ project, onClick, index, featured = false }) {
   const idx = String(index + 1).padStart(2, '0');
   const stop = (e) => e.stopPropagation();
+  const { artwork, links = {}, badge } = project;
+  const hasLinks = Boolean(project.private || links.github || links.npm || links.live);
 
   return (
     <motion.article
-      layout
       custom={index}
       variants={cardVariants}
       initial="hidden"
       animate="visible"
       exit="exit"
       whileHover={{ y: -4 }}
+      aria-labelledby={`project-${project.id}-title`}
       className={`group relative w-full overflow-hidden rounded-xl bg-bg-surface border border-border
                   transition-colors duration-300 ease-premium hover:border-border-strong hover:shadow-card-hover
                   flex flex-col ${featured ? 'gap-6 p-8 lg:p-10' : 'gap-5 p-6 lg:p-7'}`}
     >
-      {/* Full-card affordance for opening details — sits behind the content. */}
+      {/* Full-card affordance for opening details — sits behind the content.
+          Ring is inset because the article clips anything drawn outside it. */}
       <button
         type="button"
         onClick={onClick}
         aria-label={`${project.title} — view details`}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 rounded-xl focus-visible:outline-none
+                   focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent"
       />
 
-      {/* Generated motif: oversized ghost index, no imagery. */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -right-3 -top-8 font-display font-bold leading-none
-                   text-[7rem] lg:text-[9rem] text-text-primary/[0.05] select-none"
-      >
-        {idx}
-      </span>
+      {artwork ? (
+        /* Real artifact preview — for capo this is the SVG the compiler emits. */
+        <div className="pointer-events-none relative z-10 -mx-1 overflow-hidden rounded-lg border border-border">
+          <img
+            src={artwork.src}
+            alt={artwork.alt}
+            loading="lazy"
+            decoding="async"
+            className="block w-full object-cover"
+          />
+        </div>
+      ) : (
+        /* Generated motif: oversized ghost index, no imagery. */
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-3 -top-8 font-display font-bold leading-none
+                     text-[7rem] lg:text-[9rem] text-text-primary/[0.05] select-none"
+        >
+          {idx}
+        </span>
+      )}
 
       <span
         aria-hidden
@@ -77,6 +105,7 @@ export function ProjectCard({ project, onClick, index, featured = false }) {
             {project.type}
           </p>
           <h3
+            id={`project-${project.id}-title`}
             className={`font-display font-semibold text-text-primary leading-tight tracking-tight ${
               featured ? 'text-4xl lg:text-5xl' : 'text-2xl'
             }`}
@@ -93,7 +122,7 @@ export function ProjectCard({ project, onClick, index, featured = false }) {
           {project.description}
         </p>
 
-        {featured && project.highlights.length > 0 && (
+        {featured && project.highlights?.length > 0 && (
           <ul className="grid gap-2.5 sm:grid-cols-2">
             {project.highlights.map((h, i) => (
               <li key={i} className="flex gap-2.5 text-text-secondary text-sm leading-snug">
@@ -127,40 +156,35 @@ export function ProjectCard({ project, onClick, index, featured = false }) {
         </div>
       </div>
 
-      {/* Link/badge row — above the cover button, individually clickable. */}
-      <div className="relative z-10 flex items-center gap-2">
-        {project.private ? (
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-text-tertiary px-2.5 py-1 rounded-md border border-border">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-              <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            Private · commercial
-          </span>
-        ) : (
-          project.links?.github && (
-            <a
-              href={project.links.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={stop}
-              className="inline-flex items-center gap-1.5 font-mono text-[11px] text-text-secondary px-2.5 py-1 rounded-md border border-border hover:border-accent hover:text-accent transition-colors duration-200"
-            >
+      {/* Link/badge row — transparent to clicks except on the links themselves,
+          so the cover button still receives the empty space. */}
+      {hasLinks && (
+        <div className="pointer-events-none relative z-10 flex flex-wrap items-center gap-2">
+          {project.private && (
+            <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-text-tertiary px-2.5 py-1 rounded-md border border-border">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Private · commercial
+            </span>
+          )}
+          {links.npm && (
+            <a href={links.npm} target="_blank" rel="noopener noreferrer" onClick={stop} className={linkClass}>
+              <NpmIcon /> {badge?.value ?? 'npm'}
+            </a>
+          )}
+          {links.github && (
+            <a href={links.github} target="_blank" rel="noopener noreferrer" onClick={stop} className={linkClass}>
               <GithubIcon /> Source
             </a>
-          )
-        )}
-        {project.links?.live && (
-          <a
-            href={project.links.live}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={stop}
-            className="inline-flex items-center gap-1.5 font-mono text-[11px] text-text-secondary px-2.5 py-1 rounded-md border border-border hover:border-accent hover:text-accent transition-colors duration-200"
-          >
-            Live ↗
-          </a>
-        )}
-      </div>
+          )}
+          {links.live && (
+            <a href={links.live} target="_blank" rel="noopener noreferrer" onClick={stop} className={linkClass}>
+              Live ↗
+            </a>
+          )}
+        </div>
+      )}
     </motion.article>
   );
 }

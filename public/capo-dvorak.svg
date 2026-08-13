@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="948" height="388" viewBox="0 0 948 388">
+  <style>
+    text { font-family: Consolas, 'DejaVu Sans Mono', monospace; }
+    .title { fill: #ede4d3; font-size: 24px; }
+    .key { fill: #1d2130; stroke: #2b3040; stroke-width: 1; }
+    .base { fill: #ede4d3; font-size: 22px; text-anchor: middle; }
+    .shift { fill: #e3a84e; font-size: 13px; }
+    .altgr { fill: #a48ee8; font-size: 13px; text-anchor: end; }
+  </style>
+  <rect width="948" height="388" fill="#14161e"/>
+  <text class="title" x="24" y="44">Dvorak</text>
+  <rect class="key" x="27" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="54" y="102">`</text>
+  <text class="shift" x="35" y="85">~</text>
+  <rect class="key" x="87" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="114" y="102">1</text>
+  <text class="shift" x="95" y="85">!</text>
+  <rect class="key" x="147" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="174" y="102">2</text>
+  <text class="shift" x="155" y="85">@</text>
+  <rect class="key" x="207" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="234" y="102">3</text>
+  <text class="shift" x="215" y="85">#</text>
+  <rect class="key" x="267" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="294" y="102">4</text>
+  <text class="shift" x="275" y="85">$</text>
+  <rect class="key" x="327" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="354" y="102">5</text>
+  <text class="shift" x="335" y="85">%</text>
+  <rect class="key" x="387" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="414" y="102">6</text>
+  <text class="shift" x="395" y="85">^</text>
+  <rect class="key" x="447" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="474" y="102">7</text>
+  <text class="shift" x="455" y="85">&amp;</text>
+  <rect class="key" x="507" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="534" y="102">8</text>
+  <text class="shift" x="515" y="85">*</text>
+  <rect class="key" x="567" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="594" y="102">9</text>
+  <text class="shift" x="575" y="85">(</text>
+  <rect class="key" x="627" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="654" y="102">0</text>
+  <text class="shift" x="635" y="85">)</text>
+  <rect class="key" x="687" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="714" y="102">[</text>
+  <text class="shift" x="695" y="85">{</text>
+  <rect class="key" x="747" y="67" width="54" height="54" rx="6"/>
+  <text class="base" x="774" y="102">]</text>
+  <text class="shift" x="755" y="85">}</text>
+  <rect class="key" x="807" y="67" width="114" height="54" rx="6"/>
+  <rect class="key" x="27" y="127" width="84" height="54" rx="6"/>
+  <rect class="key" x="117" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="144" y="162">'</text>
+  <text class="shift" x="125" y="145">"</text>
+  <rect class="key" x="177" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="204" y="162">,</text>
+  <text class="shift" x="185" y="145">&lt;</text>
+  <rect class="key" x="237" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="264" y="162">.</text>
+  <text class="shift" x="245" y="145">&gt;</text>
+  <rect class="key" x="297" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="324" y="162">p</text>
+  <rect class="key" x="357" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="384" y="162">y</text>
+  <rect class="key" x="417" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="444" y="162">f</text>
+  <rect class="key" x="477" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="504" y="162">g</text>
+  <rect class="key" x="537" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="564" y="162">c</text>
+  <rect class="key" x="597" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="624" y="162">r</text>
+  <rect class="key" x="657" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="684" y="162">l</text>
+  <rect class="key" x="717" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="744" y="162">/</text>
+  <text class="shift" x="725" y="145">?</text>
+  <rect class="key" x="777" y="127" width="54" height="54" rx="6"/>
+  <text class="base" x="804" y="162">=</text>
+  <text class="shift" x="785" y="145">+</text>
+  <rect class="key" x="837" y="127" width="84" height="54" rx="6"/>
+  <text class="base" x="879" y="162">\</text>
+  <text class="shift" x="845" y="145">|</text>
+  <rect class="key" x="27" y="187" width="99" height="54" rx="6"/>
+  <rect class="key" x="132" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="159" y="222">a</text>
+  <rect class="key" x="192" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="219" y="222">o</text>
+  <rect class="key" x="252" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="279" y="222">e</text>
+  <rect class="key" x="312" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="339" y="222">u</text>
+  <rect class="key" x="372" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="399" y="222">i</text>
+  <rect class="key" x="432" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="459" y="222">d</text>
+  <rect class="key" x="492" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="519" y="222">h</text>
+  <rect class="key" x="552" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="579" y="222">t</text>
+  <rect class="key" x="612" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="639" y="222">n</text>
+  <rect class="key" x="672" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="699" y="222">s</text>
+  <rect class="key" x="732" y="187" width="54" height="54" rx="6"/>
+  <text class="base" x="759" y="222">-</text>
+  <text class="shift" x="740" y="205">_</text>
+  <rect class="key" x="792" y="187" width="129" height="54" rx="6"/>
+  <rect class="key" x="27" y="247" width="129" height="54" rx="6"/>
+  <rect class="key" x="162" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="189" y="282">;</text>
+  <text class="shift" x="170" y="265">:</text>
+  <rect class="key" x="222" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="249" y="282">q</text>
+  <rect class="key" x="282" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="309" y="282">j</text>
+  <rect class="key" x="342" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="369" y="282">k</text>
+  <rect class="key" x="402" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="429" y="282">x</text>
+  <rect class="key" x="462" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="489" y="282">b</text>
+  <rect class="key" x="522" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="549" y="282">m</text>
+  <rect class="key" x="582" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="609" y="282">w</text>
+  <rect class="key" x="642" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="669" y="282">v</text>
+  <rect class="key" x="702" y="247" width="54" height="54" rx="6"/>
+  <text class="base" x="729" y="282">z</text>
+  <rect class="key" x="762" y="247" width="159" height="54" rx="6"/>
+  <rect class="key" x="27" y="307" width="69" height="54" rx="6"/>
+  <rect class="key" x="102" y="307" width="69" height="54" rx="6"/>
+  <rect class="key" x="177" y="307" width="69" height="54" rx="6"/>
+  <rect class="key" x="252" y="307" width="369" height="54" rx="6"/>
+  <rect class="key" x="627" y="307" width="69" height="54" rx="6"/>
+  <rect class="key" x="702" y="307" width="69" height="54" rx="6"/>
+  <rect class="key" x="777" y="307" width="69" height="54" rx="6"/>
+  <rect class="key" x="852" y="307" width="69" height="54" rx="6"/>
+</svg>

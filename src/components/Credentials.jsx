@@ -4,19 +4,21 @@ import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
 
 const items = [
   ...education.map((e) => ({
-    id: e.institution,
+    id: `education-${e.institution}`,
     kind: 'Education',
     title: e.degree,
     sub: `${e.institution} · ${e.location}`,
     period: e.period,
+    start: e.start,
     note: e.cgpa ? `CGPA ${e.cgpa}` : null,
   })),
   ...certifications.map((c) => ({
-    id: c.title,
+    id: `certification-${c.title}`,
     kind: 'Certification',
     title: c.title,
     sub: `${c.issuer} · ${c.platform}`,
     period: c.period,
+    start: c.start,
     note: null,
   })),
 ];
@@ -60,7 +62,10 @@ export function Credentials() {
                   {it.note}
                 </span>
               )}
-              <time className="font-mono text-text-tertiary text-xs whitespace-nowrap">
+              <time
+                dateTime={it.start}
+                className="font-mono text-text-tertiary text-xs whitespace-nowrap"
+              >
                 {it.period}
               </time>
             </div>

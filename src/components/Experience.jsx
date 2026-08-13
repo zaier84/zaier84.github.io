@@ -19,7 +19,10 @@ export function Experience() {
             variants={fadeUp}
             className="grid grid-cols-1 gap-x-8 gap-y-2 sm:grid-cols-[minmax(7rem,9rem)_1fr]"
           >
-            <time className="font-mono text-text-tertiary text-xs tracking-wide whitespace-nowrap sm:pt-1">
+            <time
+              dateTime={job.start}
+              className="font-mono text-text-tertiary text-xs tracking-wide whitespace-nowrap sm:pt-1"
+            >
               {job.period}
             </time>
 

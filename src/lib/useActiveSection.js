@@ -25,7 +25,9 @@ export function useActiveSection(ids) {
 
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [ids.join('|')]);
+    // `ids` is a module-scoped constant (see src/data/nav.js), so depending on
+    // the array identity is stable and doesn't re-run the observer.
+  }, [ids]);
 
   return active;
 }

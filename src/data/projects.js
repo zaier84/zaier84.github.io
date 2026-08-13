@@ -1,68 +1,108 @@
+// Portfolio work, ordered by weight. Source of truth for the Projects section.
+//
+// Shape:
+//   artwork  — optional { src, alt }; when absent the card falls back to the
+//              generated ghost-index motif.
+//   links    — any of { github, npm, live }. Omit entirely for closed source
+//              and set `private: true` so the card renders the lock badge.
+
 export const projects = [
   {
-    id: "erp-saas",
-    title: "Multi-Tenant SaaS ERP",
-    type: "Professional",
+    id: "fin-erp",
+    title: "fin-erp",
+    type: "Professional · Solo build",
     period: "Jan 2026 – Present",
     featured: true,
     description:
-      "Architecting a production-grade multi-tenant SaaS ERP with domain-driven schema organization and row-level tenant isolation on a 400+ table MS SQL Server schema. Engineered with an orchestrator pattern (use-cases, steps, engines, pipelines) for modular, scalable business logic. Designed as a commercially distributable product with multi-tenancy and reseller support built into the core architecture.",
+      "A multi-tenant, multi-reseller, multi-currency SaaS ERP built end to end alone: 124,000 lines of production JavaScript across 265 REST endpoints, a 420+ table SQL Server database spanning 9 domain schemas, and a 117-screen React 19 SPA written with no data-fetching library and no UI kit. The Express 5 backend runs on a strict orchestrator → pipeline → step → engine layer over a UnitOfWork/BaseRepository transaction boundary, so every posting — header, lines, GL journal, open item, source update, audit row — commits atomically or rolls back as one unit.",
     highlights: [
-      "400+ table MS SQL Server schema with row-level tenant isolation",
-      "Orchestrator-driven Node.js backend: use-cases, steps, engines, pipelines",
-      "Multi-tenancy and reseller support in core architecture",
+      "Row-level tenant isolation over a SQL Server hierarchyid org tree with denormalized ancestor columns — O(1) tenant → reseller → company → branch resolution",
+      "17-middleware context chain and a deny-wins permission tree mirrored client-side",
+      "Finance: journal approval state machine, three posting pipelines, Open Item settlement engine, 12 AP/AR document types, reports sourced strictly from immutable GL entries",
+      "Inventory: four costing policies over a valuation-layer model, landed cost, batch/serial/FEFO expiry, QC holds, reconciliation-gated period close",
+      "Full Procure-to-Pay: requisition → indent → RFQ → weighted quotation comparison → PO → goods receipt → inspection → return, bridging atomically into AP billing",
+      "Hardened across two security and correctness audits; 40 Vitest integration suites (399 cases) against a live SQL Server, with a trial-balance invariant asserted on every posting phase",
     ],
-    tech: ["Node.js", "Express.js", "Microsoft SQL Server", "Orchestrator Architecture"],
+    tech: ["Node.js", "Express 5", "Microsoft SQL Server", "React 19", "Vitest"],
     // Commercial product — source is closed.
     private: true,
     links: {},
   },
   {
-    id: "macromate",
-    title: "MacroMate",
-    type: "Capstone Project",
-    period: "2025 – 2026",
+    id: "penstock",
+    title: "penstock",
+    type: "Published npm library",
+    period: "2026",
+    featured: true,
     description:
-      "AI-powered cross-platform mobile app for calorie, macronutrient, and workout tracking with personalized recommendations. Built REST APIs with FastAPI for authentication and data management. Integrated Gemini API for food image recognition and a pretrained model for meal plan generation. Designed end-to-end from mobile UI to backend, delivering a seamless experience across iOS and Android.",
+      "A zero-dependency TypeScript library for composable backend workflows — use-cases, pipelines, steps, and engines — with first-class saga-pattern rollback. When a step fails, penstock walks backwards and undoes the work that already happened, then returns failure as data: a structured result naming which steps ran, were skipped, failed, or rolled back, with timings and the causal error. Extracted from the orchestration layer that runs fin-erp.",
     highlights: [
-      "Gemini API integration for food image recognition",
-      "Pretrained ML model for personalized meal plan generation",
-      "Cross-platform Flutter app targeting iOS and Android",
+      "Reverse-order compensating rollback — failure returns a structured Result instead of throwing",
+      "Full generic type inference backed by type-level tests; dual ESM/CJS builds",
+      "115 tests at 95%+ coverage on a CI matrix across Node 20, 22, and 24",
+      "Supply-chain hardened: OIDC trusted publishing with provenance, prototype-pollution resistant, zero telemetry",
     ],
-    tech: ["Flutter", "FastAPI", "Python", "Gemini API", "REST API"],
-    // TODO(owner): replace with the exact repo/demo URLs.
-    links: { github: "https://github.com/zaier84/" },
+    tech: ["TypeScript", "Node.js", "Vitest", "tsup"],
+    badge: { label: "npm", value: "v0.3.0" },
+    links: {
+      npm: "https://www.npmjs.com/package/penstock",
+      github: "https://github.com/zaier84/penstock",
+    },
   },
   {
-    id: "ocr-scanner",
-    title: "OCR Scanner with AI Summarization",
-    type: "Project",
-    period: "2025",
-    description:
-      "Python-based OCR pipeline achieving 95%+ text extraction accuracy on multi-page PDFs with sub-3-second processing time. Integrated an AI summarization model to generate document summaries 50% faster than manual reading.",
-    highlights: [
-      "95%+ text extraction accuracy on multi-page PDFs",
-      "Sub-3-second processing time",
-      "50% faster document summarization than manual reading",
-    ],
-    tech: ["Python", "OpenCV", "Gemini API"],
-    // TODO(owner): replace with the exact repo URL.
-    links: { github: "https://github.com/zaier84/" },
-  },
-  {
-    id: "interpreter-go",
-    title: "Interpreter in Go",
-    type: "Project",
+    id: "capo",
+    title: "capo",
+    type: "Compiler",
     period: "2026",
     description:
-      "Complete interpreter for the Monkey language in Go, covering lexical analysis, parsing, AST construction, and tree-walking evaluation. Applied compiler design principles including Pratt parsing, scope handling, closures, and first-class functions. Maintained correctness throughout using test-driven development with Go's native testing framework.",
+      "A compiler for keyboard layouts, written in Go: one declarative .layout source file lowers to four output targets — an XKB symbols file, a Linux vconsole keymap, a kanata behavior skeleton, and an SVG cheatsheet — byte-identical on every run. Hand-rolled lexer and parser over a Unicode-aware token model, with an error-collecting validator that reports every diagnostic in a single pass.",
     highlights: [
-      "Full pipeline: lexer → parser → AST → tree-walking evaluator",
-      "Pratt parsing, closures, first-class functions",
-      "Test-driven development with Go's native testing framework",
+      "One source → four targets, deterministic across runs",
+      "Hand-written lexer and parser; no generator, no runtime dependencies",
+      "Diagnostics as file:line:col with rune-accurate columns, keys named by QWERTY position, and did-you-mean suggestions",
+      "Backed by a normative spec that makes diagnostic format part of the public contract",
     ],
-    tech: ["Go"],
-    // TODO(owner): replace with the exact repo URL.
-    links: { github: "https://github.com/zaier84/" },
+    tech: ["Go", "Compiler Design", "Unicode", "XKB"],
+    // The compiler's own output, used as the card artwork.
+    artwork: {
+      src: "/capo-dvorak.svg",
+      alt: "The Dvorak cheatsheet capo renders from a .layout source file",
+    },
+    links: { github: "https://github.com/zaier84/capo" },
+  },
+  {
+    id: "focus-nvim",
+    title: "focus.nvim",
+    type: "Neovim plugin",
+    period: "2026",
+    description:
+      "An asynchronous Pomodoro and focus tracker for Neovim driven by a native libuv timer handle — zero polling, and it never blocks input, redraws, or the main thread. State surfaces through a live winbar HUD that saves and restores any pre-existing winbar rather than clobbering it, plus an on-demand floating menu with a real-time progress bar and buffer-local keymaps.",
+    highlights: [
+      "Native libuv (vim.uv) timer handle — no polling loop, no input latency",
+      "Winbar HUD saves and restores whatever winbar was already there",
+      "Floating menu with live progress bar and buffer-local keymaps",
+      "Tested headlessly with plenary busted",
+    ],
+    tech: ["Lua", "Neovim", "libuv"],
+    links: { github: "https://github.com/zaier84/focus.nvim" },
+  },
+  {
+    id: "macromate",
+    title: "MacroMate",
+    type: "Final year project",
+    period: "2025 – 2026",
+    description:
+      "A cross-platform Flutter app for calorie, macronutrient, and workout tracking, backed by FastAPI REST services. Uses the Gemini API for food-image recognition and a pretrained model for meal-plan generation.",
+    highlights: [
+      "Gemini API food-image recognition",
+      "Pretrained model for meal-plan generation",
+      "FastAPI REST backend, auth and data management",
+    ],
+    tech: ["Flutter", "FastAPI", "Python", "Gemini API"],
+    links: { github: "https://github.com/zaier84/MacroMate" },
   },
 ];
+
+// Filter chips for the Projects section, in display order. `Projects.jsx`
+// drops any tag that no longer matches a project, so this stays safe to edit.
+export const projectFilters = ["All", "Node.js", "TypeScript", "Go", "Lua", "Python"];

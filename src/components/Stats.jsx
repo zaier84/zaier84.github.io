@@ -1,16 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { EASE } from '@/lib/motion';
+import { stats } from '@/data/stats';
 
-// Real, defensible metrics pulled from the actual work.
-const STATS = [
-  { value: 400, prefix: '', suffix: '+', label: 'MS SQL tables\narchitected' },
-  { value: 95, prefix: '', suffix: '%', label: 'OCR extraction\naccuracy' },
-  { value: 50, prefix: '', suffix: '%', label: 'faster doc\nsummarization' },
-  { value: 7, prefix: '', suffix: '', label: 'languages in\nthe toolbox' },
-];
-
-function Counter({ value, prefix, suffix }) {
+function Counter({ value, suffix }) {
   const reduce = useReducedMotion();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
@@ -34,7 +27,7 @@ function Counter({ value, prefix, suffix }) {
 
   return (
     <span ref={ref} className="tnum">
-      {prefix}{n}{suffix}
+      {n}{suffix}
     </span>
   );
 }
@@ -43,8 +36,8 @@ export function Stats() {
   return (
     <section aria-label="By the numbers" className="border-t border-border">
       <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16 md:py-20">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
-          {STATS.map((s, i) => (
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
+          {stats.map((s, i) => (
             <motion.div
               key={s.label}
               initial={{ opacity: 0, y: 20 }}
@@ -53,15 +46,26 @@ export function Stats() {
               transition={{ duration: 0.5, ease: EASE, delay: i * 0.08 }}
               className="flex flex-col gap-3"
             >
-              <span className="font-display font-semibold text-text-primary text-5xl lg:text-6xl tracking-tight leading-none">
-                <Counter value={s.value} prefix={s.prefix} suffix={s.suffix} />
-              </span>
-              <span className="font-mono text-text-tertiary text-xs leading-relaxed tracking-wide whitespace-pre-line">
+              {/* Assistive tech gets the settled figure; the animating one is
+                  hidden so a mid-count number is never announced. */}
+              <dd className="sr-only">
+                {s.value}{s.suffix} {s.label.replace('\n', ' ')}
+              </dd>
+              <dd
+                aria-hidden
+                className="font-display font-semibold text-text-primary text-5xl lg:text-6xl tracking-tight leading-none"
+              >
+                <Counter value={s.value} suffix={s.suffix} />
+              </dd>
+              <dt
+                aria-hidden
+                className="font-mono text-text-tertiary text-xs leading-relaxed tracking-wide whitespace-pre-line"
+              >
                 {s.label}
-              </span>
+              </dt>
             </motion.div>
           ))}
-        </div>
+        </dl>
       </div>
     </section>
   );

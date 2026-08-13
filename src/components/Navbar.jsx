@@ -1,19 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { profile } from '@/data/profile';
 import { useActiveSection } from '@/lib/useActiveSection';
+import { navLinks, sectionIds } from '@/data/nav';
 import { MobileMenu } from './MobileMenu';
 import { openCommandPalette } from './CommandPalette';
-
-const NAV_LINKS = [
-  { label: 'About', href: '#about', id: 'about' },
-  { label: 'Projects', href: '#projects', id: 'projects' },
-  { label: 'Experience', href: '#experience', id: 'experience' },
-  { label: 'Contact', href: '#contact', id: 'contact' },
-];
-
-const SECTION_IDS = ['hero', 'about', 'projects', 'experience', 'contact'];
 
 const SunIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -31,7 +23,11 @@ export function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const active = useActiveSection(SECTION_IDS);
+  const active = useActiveSection(sectionIds);
+
+  // Stable identity: MobileMenu's effect depends on it, and a new function each
+  // render would tear the effect down and re-run it on every scroll tick.
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -39,6 +35,12 @@ export function Navbar() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // The palette listens for Ctrl+K off Apple platforms, so label it that way.
+  const [isApple] = useState(() => {
+    const platform = navigator.userAgentData?.platform ?? navigator.platform ?? '';
+    return /mac|iphone|ipad|ipod/i.test(platform);
+  });
 
   const brand = profile.name.split(' ').slice(-2).join(' ');
 
@@ -50,7 +52,7 @@ export function Navbar() {
           : 'border-b border-transparent'
       }`}
     >
-      <nav className="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <nav aria-label="Primary" className="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
         <a
           href="#hero"
           className="group font-mono text-sm font-medium tracking-wide"
@@ -62,13 +64,13 @@ export function Navbar() {
         </a>
 
         <ul className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map(({ label, href, id }) => {
+          {navLinks.map(({ label, href, id }) => {
             const isActive = active === id;
             return (
               <li key={label}>
                 <a
                   href={href}
-                  aria-current={isActive ? 'true' : undefined}
+                  aria-current={isActive ? 'location' : undefined}
                   className={`relative font-mono text-xs tracking-wide px-3 py-2 transition-colors duration-200 ${
                     isActive ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
                   }`}
@@ -96,11 +98,12 @@ export function Navbar() {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-            <kbd className="font-mono text-[10px] tracking-wide">⌘K</kbd>
+            <kbd className="font-mono text-[10px] tracking-wide">{isApple ? '⌘K' : 'Ctrl K'}</kbd>
           </button>
 
           <button
             onClick={toggleTheme}
+            aria-pressed={theme === 'light'}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
             className="relative flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-surface transition-colors duration-200"
           >
@@ -119,9 +122,12 @@ export function Navbar() {
           </button>
 
           <button
+            type="button"
             className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-surface transition-colors duration-200"
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
@@ -132,8 +138,8 @@ export function Navbar() {
 
       <MobileMenu
         isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        links={NAV_LINKS}
+        onClose={closeMenu}
+        links={navLinks}
         active={active}
       />
     </header>

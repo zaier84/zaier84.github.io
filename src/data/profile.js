@@ -1,15 +1,23 @@
 export const profile = {
   name: "Muhammad Zaier Ahmad",
   title: "Backend Engineer",
-  // Short hook for the hero — punchy, first-person, distinct from the resume-style bio below.
-  tagline: "Backend engineer at home in the deep end. I write orchestrators, design multi-tenant schemas, integrate AI, and build complete language interpreters in Go from scratch — because understanding how things work at the bottom is how I stay sharp at the top.",
-  // Full bio for the About section — recruiter-optimised: value-first opener, ATS keywords, remote signal.
-  bio: "Backend and systems engineer building production-grade software since 2022. Strong foundation in systems programming (C/C++, Go) paired with full-stack delivery across Node.js, FastAPI, React, and Flutter. Currently founding and architecting a multi-tenant SaaS ERP — from schema design to backend orchestration — while maintaining CI/CD pipelines on Linux-based environments. Experienced in AI/ML integration, RESTful API design, and cross-platform mobile. Based in Lahore (PKT, UTC+5) — open to remote work globally.",
+  // Short hook for the hero — first-person, and every clause names something
+  // that actually exists and can be clicked.
+  tagline:
+    "Backend engineer building systems that have to be correct — a multi-tenant SaaS ERP where every posting commits atomically or not at all, a zero-dependency orchestration library published on npm, and a keyboard-layout compiler written in Go.",
+  // Full bio for the About section — mirrors the résumé summary so the two
+  // documents agree, keeps ATS keywords, and carries the remote-work signal.
+  bio: "Backend and systems-focused engineer working in Go, Node.js, TypeScript, and Lua. Currently building fin-erp solo — a multi-tenant, multi-reseller SaaS ERP covering General Ledger, AP/AR, Inventory, and Procure-to-Pay — while maintaining penstock, a zero-dependency workflow orchestration library published on npm, and capo, a Go compiler for a keyboard-layout DSL with four output targets. Grounded in systems programming (C/C++, Go), REST API design, multi-tenancy and RBAC, and test-driven delivery. Based in Lahore (PKT, UTC+5) — open to remote work globally.",
   location: "Lahore, Pakistan",
+  // Cycled in the hero. Every entry is a title the résumé actually supports.
+  roles: ["Backend Engineer", "Systems Engineer", "Founder & Lead Engineer"],
+  // Live status line in the hero.
+  status: "Currently — building fin-erp, solo",
   contact: {
     email: "zaier8284@gmail.com",
     github: "https://github.com/zaier84/",
     linkedin: "https://www.linkedin.com/in/zaier-ahmad/",
+    npm: "https://www.npmjs.com/~zaier",
   },
 };
 
@@ -23,6 +31,11 @@ export const socialLinks = [
     label: "GitHub",
     display: "github.com/zaier84",
     href: profile.contact.github,
+  },
+  {
+    label: "npm",
+    display: "npmjs.com/~zaier",
+    href: profile.contact.npm,
   },
   {
     label: "LinkedIn",

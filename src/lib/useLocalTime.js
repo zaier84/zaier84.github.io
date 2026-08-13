@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 /**
  * Ticking wall-clock for a given IANA timezone. Updates once per second.
@@ -8,21 +8,28 @@ import { useEffect, useState } from 'react';
  * @returns {string} e.g. "21:47:03"
  */
 export function useLocalTime(timeZone = 'Asia/Karachi') {
-  const format = () =>
-    new Intl.DateTimeFormat('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-      timeZone,
-    }).format(new Date());
+  // Building the formatter is the expensive part; it only depends on the zone,
+  // so it must not be rebuilt on every one-second tick.
+  const formatter = useMemo(
+    () =>
+      new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+        timeZone,
+      }),
+    [timeZone]
+  );
 
-  const [time, setTime] = useState(format);
+  const [time, setTime] = useState(() => formatter.format(new Date()));
 
   useEffect(() => {
-    const id = window.setInterval(() => setTime(format()), 1000);
+    const tick = () => setTime(formatter.format(new Date()));
+    tick();
+    const id = window.setInterval(tick, 1000);
     return () => window.clearInterval(id);
-  }, [timeZone]);
+  }, [formatter]);
 
   return time;
 }

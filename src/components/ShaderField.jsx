@@ -7,7 +7,7 @@ const VERT = /* glsl */ `
 `;
 
 // Domain-warped fractal noise → slow flowing field. Monochrome base lifted
-// toward the indigo accent in the warped valleys. Pointer nudges the field.
+// toward the accent colour in the warped valleys. Pointer nudges the field.
 const FRAG = /* glsl */ `
   precision highp float;
   uniform float uTime;
@@ -76,11 +76,12 @@ function hexToRgb(hex) {
   return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
 }
 
+// Fallbacks mirror the dark-theme tokens in src/index.css.
 function readColors() {
   const s = getComputedStyle(document.documentElement);
   return {
-    a: hexToRgb(s.getPropertyValue('--shader-a') || '#181a20'),
-    b: hexToRgb(s.getPropertyValue('--shader-b') || '#5d7cf5'),
+    a: hexToRgb(s.getPropertyValue('--shader-a') || '#111110'),
+    b: hexToRgb(s.getPropertyValue('--shader-b') || '#34d399'),
   };
 }
 
@@ -95,17 +96,16 @@ function readColors() {
 export function ShaderField({ className = '', intensity = 1 }) {
   const reduce = useReducedMotion();
   const canvasRef = useRef(null);
-  const [fallback, setFallback] = useState(reduce);
+  const [glFailed, setGlFailed] = useState(false);
+  const [coarsePointer] = useState(
+    () => window.matchMedia('(pointer: coarse)').matches
+  );
+
+  // Derived, not stored: only an actual WebGL failure needs state.
+  const fallback = reduce || coarsePointer || glFailed;
 
   useEffect(() => {
-    if (reduce) {
-      setFallback(true);
-      return undefined;
-    }
-    if (window.matchMedia('(pointer: coarse)').matches) {
-      setFallback(true);
-      return undefined;
-    }
+    if (reduce || coarsePointer) return undefined;
 
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
@@ -114,8 +114,15 @@ export function ShaderField({ className = '', intensity = 1 }) {
     let raf = 0;
     let running = true;
     let disposed = false;
+    let resume = () => {};
     const mouse = [0.5, 0.5];
     const targetMouse = [0.5, 0.5];
+
+    const onContextLost = (e) => {
+      e.preventDefault();
+      running = false;
+      setGlFailed(true);
+    };
 
     const onPointer = (e) => {
       targetMouse[0] = e.clientX / window.innerWidth;
@@ -162,11 +169,11 @@ export function ShaderField({ className = '', intensity = 1 }) {
         mesh = new Mesh(gl, { geometry, program });
         onResize();
 
+        // Pausing cancels the loop outright rather than re-scheduling an
+        // empty frame forever, so an offscreen or hidden shader costs nothing.
         const render = (t) => {
-          if (!running) {
-            raf = requestAnimationFrame(render);
-            return;
-          }
+          raf = 0;
+          if (!running || disposed) return;
           mouse[0] += (targetMouse[0] - mouse[0]) * 0.05;
           mouse[1] += (targetMouse[1] - mouse[1]) * 0.05;
           program.uniforms.uMouse.value = mouse;
@@ -174,18 +181,30 @@ export function ShaderField({ className = '', intensity = 1 }) {
           renderer.render({ scene: mesh });
           raf = requestAnimationFrame(render);
         };
-        raf = requestAnimationFrame(render);
+        resume = () => {
+          if (!raf && running && !disposed) raf = requestAnimationFrame(render);
+        };
+
+        // A dropped GPU context would otherwise blank the hero permanently.
+        canvas.addEventListener('webglcontextlost', onContextLost);
+        resume();
       })
-      .catch(() => setFallback(true));
+      .catch(() => setGlFailed(true));
 
     window.addEventListener('pointermove', onPointer, { passive: true });
     window.addEventListener('resize', onResize);
 
-    const onVisibility = () => { running = !document.hidden; };
+    const onVisibility = () => {
+      running = !document.hidden;
+      resume();
+    };
     document.addEventListener('visibilitychange', onVisibility);
 
     const io = new IntersectionObserver(
-      ([entry]) => { running = entry.isIntersecting && !document.hidden; },
+      ([entry]) => {
+        running = entry.isIntersecting && !document.hidden;
+        resume();
+      },
       { threshold: 0 }
     );
     io.observe(canvas);
@@ -197,11 +216,12 @@ export function ShaderField({ className = '', intensity = 1 }) {
       window.removeEventListener('pointermove', onPointer);
       window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibility);
+      canvas.removeEventListener('webglcontextlost', onContextLost);
       io.disconnect();
       const ext = gl?.getExtension('WEBGL_lose_context');
       ext?.loseContext();
     };
-  }, [reduce, intensity]);
+  }, [reduce, coarsePointer, intensity]);
 
   // Theme palette is read on mount; parent remounts via key={theme} on toggle.
 

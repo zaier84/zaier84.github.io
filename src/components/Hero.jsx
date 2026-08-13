@@ -8,7 +8,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { MagneticButton } from './MagneticButton';
 import { ShaderField } from './ShaderField';
 
-const ROLES = ['Backend Engineer', 'API Architect', 'Systems Engineer', 'SaaS Founder'];
+const ROLES = profile.roles;
 
 const heroContainer = {
   hidden: {},
@@ -101,7 +101,7 @@ export function Hero() {
             <MagneticButton
               as="a"
               href="#projects"
-              className="inline-flex items-center gap-2 rounded-lg bg-accent text-white px-6 py-3 font-mono text-sm hover:bg-accent-hover transition-colors duration-200"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent-strong text-accent-fg px-6 py-3 font-mono text-sm hover:bg-accent-strong-hover transition-colors duration-200"
             >
               View Projects
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -132,7 +132,7 @@ export function Hero() {
                 <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-60 animate-ping" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
-              <span className="text-text-secondary">Currently — building a multi-tenant ERP</span>
+              <span className="text-text-secondary">{profile.status}</span>
             </span>
             <span className="tnum">{city} · {time}</span>
           </motion.div>

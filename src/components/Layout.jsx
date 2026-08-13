@@ -1,7 +1,6 @@
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { ScrollProgress } from './ScrollProgress';
-import { Cursor } from './Cursor';
 import { CommandPalette } from './CommandPalette';
 import { useLenis } from '@/lib/useLenis';
 
@@ -20,15 +19,15 @@ export function Layout({ children }) {
       <ScrollProgress />
       <Navbar />
 
-      <main id="main" className="flex-1">
+      {/* tabIndex makes <main> a valid focus target so "Skip to content"
+          actually moves the keyboard caret, not just the scroll position. */}
+      <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
         {children}
       </main>
 
       <Footer />
 
       <CommandPalette />
-      <Cursor />
-      <div className="grain" aria-hidden />
     </div>
   );
 }

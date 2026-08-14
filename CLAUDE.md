@@ -151,6 +151,13 @@ unfalsifiable numbers.
 `main`, then publishes `dist` to GitHub Pages. `vite.config.js` copies `index.html` to
 `dist/404.html` so deep links boot the SPA instead of GitHub's 404.
 
+**Bump the `?v=` on `/favicon.svg` and `og.png` in `index.html` whenever you repaint them.**
+Both are referenced by a stable path, and both are cached per-URL far more aggressively than
+normal assets — browsers keep favicons in a store that survives a hard refresh, and LinkedIn
+and Slack cache `og:image` by URL. Changing the file's bytes alone will not reach anyone who
+has already loaded the old one; changing the query string will. GitHub Pages sends a fixed
+`Cache-Control: max-age=600` and exposes no header configuration, so the URL is the only lever.
+
 ## Dev Commands
 
 ```bash
